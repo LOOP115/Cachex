@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c23fb1b7-4242-4573-a434-7d643795dc7f" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Astar.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/__main__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/util.py" beforeDir="false" />
-    </list>
+    <list default="true" id="c23fb1b7-4242-4573-a434-7d643795dc7f" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -64,7 +59,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1648455402480</updated>
-      <workItem from="1648455423006" duration="4622000" />
+      <workItem from="1648455423006" duration="4934000" />
     </task>
     <servers />
   </component>
