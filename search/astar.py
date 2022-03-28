@@ -34,8 +34,6 @@ def heuristic(start, goal):
 # 3 detect the goal state
 
 
-
-
 # 1 board from input. 2 point (r,q)
 # return false if is blocked, return true if is not blocked
 def b_detect(board, point):
@@ -44,6 +42,7 @@ def b_detect(board, point):
             return False
     return True
 
+
 # inputs: n -> int, board -> 2d array with the coordinate have already get occupied, current node -> (x,y)
 # outputs: 2d list with the neighboring
 def neighbors(n, board, current):
@@ -51,7 +50,7 @@ def neighbors(n, board, current):
     y = current[1]
     neighborList = []
     if 0 <= x + 1 < n and 0 <= y - 1 < n and b_detect(board, (x + 1, y - 1)):
-        neighborList.append((x + 1,y - 1))
+        neighborList.append((x + 1, y - 1))
     if 0 <= x + 1 < n and 0 <= y < n and b_detect(board, (x + 1, y)):
         neighborList.append((x + 1, y))
     if 0 <= x < n and 0 <= y - 1 < n and b_detect(board, (x, y - 1)):
@@ -63,7 +62,6 @@ def neighbors(n, board, current):
     if 0 <= x - 1 < n and 0 <= y + 1 < n and b_detect(board, (x - 1, y + 1)):
         neighborList.append((x - 1, y + 1))
     return neighborList
-
 
 
 def a_star_search(n, board, start, goal):

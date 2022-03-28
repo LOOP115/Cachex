@@ -9,12 +9,13 @@ This script contains the entry point to the program (the code in
 import sys
 import json
 
-
 # If you want to separate your code into separate files, put them
 # inside the `search` directory (like this one and `util.py`) and
 # then import from them like this:
 from search.util import print_board, print_coordinate
-from search.Astar import a_star_search, neighbors
+from search.astar import a_star_search, neighbors
+
+
 def main():
     try:
         with open(sys.argv[1]) as file:
@@ -36,8 +37,8 @@ def main():
     boardDict = {start: "start",
                  goal: "goal"}
     for block in data["board"]:
-        boardDict[(block[1], block[2])] =  block[0]
-    print_board(data["n"],boardDict)
+        boardDict[(block[1], block[2])] = block[0]
+    print_board(data["n"], boardDict)
 
     # print(neighbors(data["n"], data["board"], (2,1)))
 
@@ -54,7 +55,7 @@ def main():
         node = explored[node][0]
 
         boardDict[node] = "p"
-        print_board(data["n"],boardDict)
+        print_board(data["n"], boardDict)
 
     result.append(start)
     result.reverse()
