@@ -1,4 +1,4 @@
 # Cachex
 
-* [Cachex Rules](cachex_rule.pdf)
-* [Part A Specification](spec_a.pdf)
+* [Cachex Rules](spec/cachex_rule.pdf)
+* [Part A Specification](spec/spec_a.pdf)
