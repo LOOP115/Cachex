@@ -20,7 +20,7 @@ def apply_ansi(str, bold=True, color=None):
 
     str -- String to apply ANSI control codes to
     bold -- True if you want the text to be rendered bold
-    color -- Colour of the text. Currently only red/"r" and blue/"b" are
+    color -- Colour of the text. Currently, only red/"r" and blue/"b" are
         supported, but this can easily be extended if desired...
 
     """
@@ -134,7 +134,7 @@ def print_board(n, board_dict, message="", ansi=False, **kwargs):
         # Note that j is equivalent to q in axial coordinates
         for j in range(n):
             coord = (n - i - 1, j)
-            value = str(board_dict.get(coord, ""))
+            value = str(board_dict.pop(coord, ""))
             contents = value.center(h_spacing - 1)
             if ansi:
                 contents = apply_ansi_s(contents, color=value)

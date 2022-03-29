@@ -1,21 +1,9 @@
-import heapq
+from search.priority_queue import *
 
 
-class PriorityQueue:
-    def __init__(self):
-        self.elements = []
-
-    def empty(self) -> bool:
-        return not self.elements
-
-    def put(self, item, priority):
-        heapq.heappush(self.elements, (priority, item))
-
-    def get(self):
-        return heapq.heappop(self.elements)[1]
-
-
-def heuristic(start, goal):
+# https://stackoverflow.com/questions/5084801/manhattan-distance-between-tiles-in-a-hexagonal-grid
+# Compute manhattan distance of hexagonal grids
+def manhattan(start, goal):
     dx = goal[0] - start[0]
     dy = goal[1] - start[1]
 
@@ -25,63 +13,81 @@ def heuristic(start, goal):
         return max(abs(dx), abs(dy))
 
 
-# object oriented programming?
-# a*: total cost = exact step have been executed + estimated heuristic2
-
-# procedure
-# 1 calculate heuristic as the initial costs and put the results in to priority queue(sort by the cost)
-# 2 expand the node with the lowest cost, then update the queue
-# 3 detect the goal state
-
-
-# 1 board from input. 2 point (r,q)
-# return false if is blocked, return true if is not blocked
-def b_detect(board, point):
-    for b in board:
-        if b[1] == point[0] and b[2] == point[1]:
-            return False
-    return True
-
-
-# inputs: n -> int, board -> 2d array with the coordinate have already get occupied, current node -> (x,y)
-# outputs: 2d list with the neighboring
-def neighbors(n, board, current):
-    x = current[0]
-    y = current[1]
-    neighborList = []
-    if 0 <= x + 1 < n and 0 <= y - 1 < n and b_detect(board, (x + 1, y - 1)):
-        neighborList.append((x + 1, y - 1))
-    if 0 <= x + 1 < n and 0 <= y < n and b_detect(board, (x + 1, y)):
-        neighborList.append((x + 1, y))
-    if 0 <= x < n and 0 <= y - 1 < n and b_detect(board, (x, y - 1)):
-        neighborList.append((x, y - 1))
-    if 0 <= x < n and 0 <= y + 1 < n and b_detect(board, (x, y + 1)):
-        neighborList.append((x, y + 1))
-    if 0 <= x - 1 < n and 0 <= y < n and b_detect(board, (x - 1, y)):
-        neighborList.append((x - 1, y))
-    if 0 <= x - 1 < n and 0 <= y + 1 < n and b_detect(board, (x - 1, y + 1)):
-        neighborList.append((x - 1, y + 1))
-    return neighborList
+# Find cells 1 unit from the current cell
+def neighbors(board, curr_cell):
+    x = curr_cell[0]
+    y = curr_cell[1]
+    neighbor_list = []
+    # Check if neighbour cells are in bounds and not occupied
+    if board.in_bounds((x + 1, y - 1)) and board.is_occupied((x + 1, y - 1)):
+        neighbor_list.append((x + 1, y - 1))
+    if board.in_bounds((x + 1, y)) and board.is_occupied((x + 1, y)):
+        neighbor_list.append((x + 1, y))
+    if board.in_bounds((x, y - 1)) and board.is_occupied((x, y - 1)):
+        neighbor_list.append((x, y - 1))
+    if board.in_bounds((x, y + 1)) and board.is_occupied((x, y + 1)):
+        neighbor_list.append((x, y + 1))
+    if board.in_bounds((x - 1, y)) and board.is_occupied((x - 1, y)):
+        neighbor_list.append((x - 1, y))
+    if board.in_bounds((x - 1, y + 1)) and board.is_occupied((x - 1, y + 1)):
+        neighbor_list.append((x - 1, y + 1))
+    return neighbor_list
 
 
-def a_star_search(n, board, start, goal):
-    reach_goal = False
-    pq = PriorityQueue()
-    pq.put((start[0], start[1]), 0)
+# Use A* to search the path
+def find_path(board):
+    # Use to priority queue to help get the cell with the lowest f(x) while expansion
+    queue = PriorityQueue()
+    queue.push((board.start[0], board.start[1]), 0)
 
-    # current node : (last node, cost so far)
-    explored = {(start[0], start[1]): (None, 0)}
+    # Keep records of explored cells
+    # Format: {current cell: (last cell, f(x))}
+    explored = {(board.start[0], board.start[1]): (None, 0)}
 
-    while not pq.empty():
-        current = pq.get()
+    while not queue.empty():
+        # Pop and expand the cell with lowest f(x)
+        curr_cell = queue.pop()
+        for next_cell in neighbors(board, curr_cell):
+            new_cost = explored[curr_cell][1] + 1
+            # Goal test upon expansion
+            if next_cell == board.goal:
+                explored[next_cell] = (curr_cell, new_cost)
+                return explored
+            # Calculate f(x) of new cell and push it to the priority queue
+            if next_cell not in explored.keys() or new_cost < explored[next_cell][1]:
+                explored[next_cell] = (curr_cell, new_cost)
+                queue.push(next_cell, new_cost + manhattan(next_cell, board.goal))
 
-        if current == goal:
-            reach_goal = True
-            break
-
-        for next in neighbors(n, board, current):
-            newCost = explored[current][1] + 1
-            if next not in explored.keys() or newCost < explored[next][1]:
-                explored[next] = (current, newCost)
-                pq.put(next, newCost + heuristic(next, goal))
     return explored
+
+
+# Format and print the result
+def print_path(board, explored):
+    cell = board.goal
+    # No path found
+    if list(explored.keys())[-1] != cell:
+        print(0)
+        return
+
+    result = []
+    # Backtrack the path
+    while True:
+        result.append(cell)
+        cell = explored[cell][0]
+        if cell == board.start:
+            break
+        board.board_dict[cell] = "p"
+
+    # Format the output
+    result.append(board.start)
+    result.reverse()
+    print(len(result))
+    for cell in result:
+        print(f'({cell[0]},{cell[1]})')
+
+
+# Print search history
+def search_history(explored):
+    print("\nSearch history: ")
+    for key in explored.keys():
+        print(f'Current cell: {key} | Last cell: {explored[key][0]} | cost: {explored[key][1]}')
