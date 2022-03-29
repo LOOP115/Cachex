@@ -1,12 +1,11 @@
 from search.priority_queue import *
 
 
-# https://stackoverflow.com/questions/5084801/manhattan-distance-between-tiles-in-a-hexagonal-grid
 # Compute manhattan distance of hexagonal grids
+# https://stackoverflow.com/questions/5084801/manhattan-distance-between-tiles-in-a-hexagonal-grid
 def manhattan(start, goal):
     dx = goal[0] - start[0]
     dy = goal[1] - start[1]
-
     if (dx >= 0 and dy >= 0) or (dx < 0 and dy < 0):
         return abs(dx + dy)
     else:
@@ -18,23 +17,19 @@ def neighbors(board, curr_cell):
     x = curr_cell[0]
     y = curr_cell[1]
     neighbor_list = []
+    # Expand matrix
+    dx = [1, 1, 0, 0, -1, -1]
+    dy = [-1, 0, -1, 1, 0, 1]
     # Check if neighbour cells are in bounds and not occupied
-    if board.in_bounds((x + 1, y - 1)) and board.is_occupied((x + 1, y - 1)):
-        neighbor_list.append((x + 1, y - 1))
-    if board.in_bounds((x + 1, y)) and board.is_occupied((x + 1, y)):
-        neighbor_list.append((x + 1, y))
-    if board.in_bounds((x, y - 1)) and board.is_occupied((x, y - 1)):
-        neighbor_list.append((x, y - 1))
-    if board.in_bounds((x, y + 1)) and board.is_occupied((x, y + 1)):
-        neighbor_list.append((x, y + 1))
-    if board.in_bounds((x - 1, y)) and board.is_occupied((x - 1, y)):
-        neighbor_list.append((x - 1, y))
-    if board.in_bounds((x - 1, y + 1)) and board.is_occupied((x - 1, y + 1)):
-        neighbor_list.append((x - 1, y + 1))
+    for i in range(6):
+        cell = (x + dx[i], y + dy[i])
+        if board.in_bounds(cell) and board.is_occupied(cell):
+            neighbor_list.append(cell)
     return neighbor_list
 
 
 # Use A* to search the path
+# https://www.redblobgames.com/pathfinding/a-star/implementation.html
 def find_path(board):
     # Use to priority queue to help get the cell with the lowest f(x) while expansion
     queue = PriorityQueue()
@@ -57,7 +52,6 @@ def find_path(board):
             if next_cell not in explored.keys() or new_cost < explored[next_cell][1]:
                 explored[next_cell] = (curr_cell, new_cost)
                 queue.push(next_cell, new_cost + manhattan(next_cell, board.goal))
-
     return explored
 
 
