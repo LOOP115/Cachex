@@ -90,4 +90,4 @@ def print_path(board, explored):
 def search_history(explored):
     print("\nSearch history: ")
     for key in explored.keys():
-        print(f'Current cell: {key} | Last cell: {explored[key][0]} | cost: {explored[key][1]}')
+        print(f'Current cell: {key} | Last cell: {explored[key][0]} | f(x) = {explored[key][1]}')
