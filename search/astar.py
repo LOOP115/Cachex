@@ -17,7 +17,7 @@ def neighbors(board, curr_cell):
     x = curr_cell[0]
     y = curr_cell[1]
     neighbor_list = []
-    # Expand matrix
+    # Expansion matrix
     dx = [1, 1, 0, 0, -1, -1]
     dy = [-1, 0, -1, 1, 0, 1]
     # Check if neighbour cells are in bounds and not occupied
@@ -31,7 +31,7 @@ def neighbors(board, curr_cell):
 # Use A* to search the path
 # https://www.redblobgames.com/pathfinding/a-star/implementation.html
 def find_path(board):
-    # Use to priority queue to help get the cell with the lowest f(x) while expansion
+    # Use priority queue to help get the cell with the lowest f(x) while expansion
     queue = PriorityQueue()
     queue.push((board.start[0], board.start[1]), 0)
 

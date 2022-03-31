@@ -14,5 +14,6 @@ class PriorityQueue:
     def pop(self):
         return heapq.heappop(self.elements)[1]
 
+    # Add the new cell and do up heap
     def push(self, item, priority):
         heapq.heappush(self.elements, (priority, item))
