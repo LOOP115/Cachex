@@ -1,7 +1,12 @@
 # Cachex
 
+<p align="center">
+  <img src="spec/board.jpg">
+</p>
+
 * [Cachex Rules](spec/cachex_rule.pdf)
 * [Part A Specification](spec/spec_a.pdf)
+* [Part A Report](report/report.pdf)
 
 ## Setup on Unix Machine
 * Host Name: dimefox.eng.unimelb.edu.au
