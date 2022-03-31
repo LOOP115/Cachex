@@ -4,7 +4,7 @@
 * [Part A Specification](spec/spec_a.pdf)
 
 ## Setup on Unix Machine
-* Host Name: dimefox.eng.unimelb.edu.au
+* <code>Host Name: dimefox.eng.unimelb.edu.au</code>
 * <code>enable-python3</code>
 * <code>python \_\_main\_\_.py inputs/input(n).json</code>
 
