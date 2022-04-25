@@ -22,3 +22,22 @@
 
 ## Part B
 * [Specification](spec/spec_b.pdf)
+
+### Progress Check List
+> 跑通下棋对战 ✔
+
+> 构造 Opponent
+* Random
+* Basic Utility Function
+* Same Strategy as Player
+
+> 实现 MiniMax
+
+> 记录对战棋局, 生成训练数据
+
+> 实现 Alpha-Beta Pruning
+
+> 优化 Evaluation Function
+
+> 完成 Report
+

@@ -1,5 +1,8 @@
-
 class Player:
+
+    side = ""
+    size = int()
+
     def __init__(self, player, n):
         """
         Called once at the beginning of a game to initialise this player.
@@ -9,15 +12,19 @@ class Player:
         play as Red, or the string "blue" if your player will play
         as Blue.
         """
-        # put your code here
+        self.side = player
+        self.size = n
 
     def action(self):
         """
         Called at the beginning of your turn. Based on the current state
         of the game, select an action to play.
         """
-        # put your code here
-    
+        cmd = input()
+        cmd = cmd.split(",")
+        action = (cmd[0], int(cmd[1]), int(cmd[2]))
+        return action
+
     def turn(self, player, action):
         """
         Called at the end of each player's turn to inform this player of 
@@ -29,5 +36,7 @@ class Player:
         the same as what your player returned from the action method
         above. However, the referee has validated it at this point.
         """
-        # put your code here
+        print(f"Turn: {self.side}")
+        print(player)
+        print(action)
 
