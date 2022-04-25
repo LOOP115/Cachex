@@ -1,12 +1,9 @@
 # Cachex
 
-<p align="center">
-  <img src="spec/board.jpg">
-</p>
-
 * [Cachex Rules](spec/cachex_rule.pdf)
 
 ## Part A
+[**Searching**](simple_search)
 * [Specification](spec/spec_a.pdf)
 * [Report](simple_search/report/report.pdf)
 ####
@@ -21,6 +18,7 @@
 
 
 ## Part B
+**Playing the Game**
 * [Specification](spec/spec_b.pdf)
 
 ### Progress Check List
