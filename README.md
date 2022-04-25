@@ -8,7 +8,7 @@
 
 ## Part A
 * [Specification](spec/spec_a.pdf)
-* [Report](Part_A/report/report.pdf)
+* [Report](simple_search/report/report.pdf)
 ####
 > Setup on Unix Machine
 * <code>Host Name: dimefox.eng.unimelb.edu.au</code>
