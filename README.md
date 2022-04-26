@@ -31,9 +31,9 @@
 
 > 实现 MiniMax
 
-> 记录对战棋局, 生成训练数据
+> 实现 α-β Pruning
 
-> 实现 Alpha-Beta Pruning
+> 记录对战棋局, 生成训练数据
 
 > 优化 Evaluation Function
 
