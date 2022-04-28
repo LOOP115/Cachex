@@ -23,3 +23,9 @@ class Board:
     def print_dict(self):
         for k, v in self.board_dict.items():
             print(f"{k}: {v}")
+
+    # Check if the first move is in the center of the board
+    def legal_first_move(self, move):
+        if (self.size % 2 != 0) and (move[0] == move[1]) and (self.size >> 1 == move[0]):
+            return False
+        return True

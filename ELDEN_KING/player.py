@@ -1,4 +1,5 @@
 from ELDEN_KING.board import *
+from ELDEN_KING.utils import *
 
 
 class Player:
@@ -24,8 +25,13 @@ class Player:
         self.board.print_dict()
         cmd = input()
         cmd = cmd.split(",")
-        action = (cmd[0], int(cmd[1]), int(cmd[2]))
-        return action
+        cell = (int(cmd[1]), int(cmd[2]))
+        # The first move cannot be the center of the board
+        if (self.board.turn == 1) and (not self.board.legal_first_move(cell)):
+            cmd = input()
+            cmd = cmd.split(",")
+            cell = (int(cmd[1]), int(cmd[2]))
+        return place_action(cell)
 
     def turn(self, player, action):
         """
@@ -45,4 +51,3 @@ class Player:
             self.board.my_action((action[1], action[2]))
         else:
             self.board.op_action((action[1], action[2]))
-        print("\n")
