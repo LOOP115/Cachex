@@ -15,14 +15,14 @@ class Player:
         """
         self.side = player
         self.size = n
-        self.board = Board(n)
+        self.board = Board(n, player)
 
     def action(self):
         """
         Called at the beginning of your turn. Based on the current state
         of the game, select an action to play.
         """
-        self.board.print_dict()
+        self.board.print_board_dict()
         cmd = input()
         cmd = cmd.split(",")
         cell = (int(cmd[1]), int(cmd[2]))
@@ -47,7 +47,9 @@ class Player:
         # print(f"Turn: {self.side}")
         # print(player)
         # print(action)
-        if self.side == player:
-            self.board.my_action((action[1], action[2]))
-        else:
-            self.board.op_action((action[1], action[2]))
+        cell = (action[1], action[2])
+        result = self.board.can_capture(cell, player)
+        print(result)
+        if result is not None:
+            self.board.capture_remove(result[1])
+        self.board.make_move(cell, player)

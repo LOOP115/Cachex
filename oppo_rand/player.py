@@ -8,7 +8,7 @@ class Player:
     def __init__(self, player, n):
         self.side = player
         self.size = n
-        self.board = Board(n)
+        self.board = Board(n, player)
 
     def action(self):
         # cmd = input()
@@ -21,4 +21,9 @@ class Player:
         return place_action(cell)
 
     def turn(self, player, action):
-        self.board.place_cell((action[1], action[2]))
+        cell = (action[1], action[2])
+        self.board.place_cell(cell)
+        result = self.board.can_capture(cell, player)
+        if result is not None:
+            self.board.capture_remove(result[1])
+        self.board.make_move(cell, player)

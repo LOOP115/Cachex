@@ -37,7 +37,7 @@
 > 校验 Rules
 * Swap Rule (STEAL)  后期实现，胜率 > 50% 的初始位置可以进行替换
 * Starting with a hex in the center is illegal ✔
-* Capture
+* Capture ✔
 * Draw （交由 Referee 裁决）✔
     * 7 same game configurations
     * 343 turns
