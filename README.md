@@ -24,14 +24,22 @@
 ### Progress Check List
 > 跑通下棋对战 ✔
 
-> 构造 Opponent
-* Random
-* Basic Utility Function
-* Same Strategy as Player
+> 校验 Rules
+* Swap Rule (STEAL)
+* Starting with a hex in the center is illegal
+* Capture
+* Draw
+  * 7 same game configurations
+  * 343 turns
 
 > 实现 MiniMax
 
 > 实现 α-β Pruning
+
+> 构造 Opponent
+* Random ✔
+* Basic Utility Function
+* Same Strategy as Player
 
 > 记录对战棋局, 生成训练数据
 
