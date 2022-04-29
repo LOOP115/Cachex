@@ -1,4 +1,4 @@
-from ELDEN_KING.utils import *
+from human.utils import *
 
 
 class Board:
@@ -108,9 +108,8 @@ class Board:
                     temp_capture.append(o)
                 # Success capture
                 if len(temp_capture) == 2:
-                    # print("capture!")
-                    return temp_capture
-        return None
+                    print("capture!")
+                    return m, temp_capture
 
     # Remove pieces that have been captured
     def capture_remove(self, cells):

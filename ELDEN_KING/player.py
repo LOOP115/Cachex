@@ -1,6 +1,6 @@
 from ELDEN_KING.board import *
 from ELDEN_KING.utils import *
-
+from ELDEN_KING.strategy import *
 
 class Player:
 
@@ -13,7 +13,7 @@ class Player:
         play as Red, or the string "blue" if your player will play
         as Blue.
         """
-        self.side = player
+        self.player = player
         self.size = n
         self.board = Board(n, player)
 
@@ -22,7 +22,7 @@ class Player:
         Called at the beginning of your turn. Based on the current state
         of the game, select an action to play.
         """
-        self.board.print_board_dict()
+        # self.board.print_board_dict()
         cmd = input()
         cmd = cmd.split(",")
         cell = (int(cmd[1]), int(cmd[2]))
@@ -31,6 +31,16 @@ class Player:
             cmd = input()
             cmd = cmd.split(",")
             cell = (int(cmd[1]), int(cmd[2]))
+
+        # Check max path
+        # sides = split_board(self.player, cell, self.board)
+        # print(sides[0])
+        # print(sides[1])
+        # max_len0 = max_path_length(sides[0], self.board)
+        # max_len1 = max_path_length(sides[1], self.board)
+        # print(max_len0)
+        # print(max_len1)
+
         return place_action(cell)
 
     def turn(self, player, action):
@@ -49,7 +59,7 @@ class Player:
         # print(action)
         cell = (action[1], action[2])
         result = self.board.can_capture(cell, player)
-        print(result)
+        # print(result)
         if result is not None:
-            self.board.capture_remove(result[1])
+            self.board.capture_remove(result)
         self.board.make_move(cell, player)

@@ -12,7 +12,6 @@
 ####
 
 > Setup on Unix Machine
-
 * <code>Host Name: dimefox.eng.unimelb.edu.au</code>
 * <code>enable-python3</code>
 * <code>python -m search inputs/input.json</code>
@@ -20,7 +19,6 @@
 ####
 
 > Reference
-
 * https://stackoverflow.com/questions/5084801/manhattan-distance-between-tiles-in-a-hexagonal-grid
 * https://www.redblobgames.com/pathfinding/a-star/implementation.html
 
@@ -47,13 +45,20 @@
 > 实现 α-β Pruning
 
 > 构造 Opponent
+* Human ✔
 * Random ✔
 * Basic Utility Function
 * Same Strategy as Player
 
+> Evaluation Function 要素
+* 己方当前连续棋子的最大长度 ✔
+* 己方当前距离胜利还需要几步
+* 对方当前连续棋子的最大长度 ✔
+* 对方当前距离胜利还需要几步
+
 > 记录对战棋局, 生成训练数据
 
-> 优化 Evaluation Function
+> 机器学习，优化模型
 
 > 完成 Report
 
