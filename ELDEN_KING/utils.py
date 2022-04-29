@@ -40,17 +40,18 @@ def split_board(player, move, board):
 # Compute max length of consecutive pieces
 def max_path_length(my_cells, board):
     max_length = 0
+    clone = my_cells.copy()
     # Breath first search
-    while len(my_cells) > 0:
-        queue = [my_cells.pop(0)]
+    while len(clone) > 0:
+        queue = [clone.pop(0)]
         length = 0
         while len(queue) > 0:
             temp = queue.pop(0)
             length += 1
-            neighbours = board.neighbours(temp)
-            for n in neighbours:
-                if n in my_cells:
-                    my_cells.remove(n)
+            neighbour_list = board.neighbours(temp)
+            for n in neighbour_list:
+                if n in clone:
+                    clone.remove(n)
                     queue.append(n)
         max_length = max(max_length, length)
     return max_length
@@ -58,21 +59,21 @@ def max_path_length(my_cells, board):
 
 # Initialise cells left and right to the queue
 def init_r_neighbours(mid, queue, board, bottom):
-    temp = []
-    right = (mid[0], mid[1] + 1)
-    if board.in_bounds(right):
-        temp.append((right, 0))
-    left = (mid[0], mid[1] - 1)
-    if board.in_bounds(left):
-        temp.append((left, 1))
-
     # Decide the order to offer the queue
     if bottom:
-        queue.append(temp[0])
-        queue.append(temp[1])
+        right = (mid[0], mid[1] + 1)
+        if board.in_bounds(right):
+            queue.append((right, 0))
+        left = (mid[0], mid[1] - 1)
+        if board.in_bounds(left):
+            queue.append((left, 1))
     else:
-        queue.append(temp[1])
-        queue.append(temp[0])
+        left = (mid[0], mid[1] - 1)
+        if board.in_bounds(left):
+            queue.append((left, 1))
+        right = (mid[0], mid[1] + 1)
+        if board.in_bounds(right):
+            queue.append((right, 0))
 
 
 # Add cells left or right to the queue
@@ -102,21 +103,21 @@ def find_r_border(cell, board, op_cells, bottom):
 
 # Initialise cells top and bottom to the queue
 def init_q_neighbours(mid, queue, board, left):
-    temp = []
-    top = (mid[0] + 1, mid[1])
-    if board.in_bounds(top):
-        temp.append((top, 0))
-    bottom = (mid[0] - 1, mid[1])
-    if board.in_bounds(bottom):
-        temp.append((bottom, 1))
-
     # Decide the order to offer the queue
     if left:
-        queue.append(temp[0])
-        queue.append(temp[1])
+        top = (mid[0] + 1, mid[1])
+        if board.in_bounds(top):
+            queue.append((top, 0))
+        bottom = (mid[0] - 1, mid[1])
+        if board.in_bounds(bottom):
+            queue.append((bottom, 1))
     else:
-        queue.append(temp[1])
-        queue.append(temp[0])
+        bottom = (mid[0] - 1, mid[1])
+        if board.in_bounds(bottom):
+            queue.append((bottom, 1))
+        top = (mid[0] + 1, mid[1])
+        if board.in_bounds(top):
+            queue.append((top, 0))
 
 
 # Add cells top or bottom to the queue
@@ -144,6 +145,19 @@ def find_q_border(cell, board, op_cells, left):
             add_q_neighbours(temp, queue, board)
 
 
+# Return the number of cells which is in the same line of the given cell
+def num_one_line(player, cell, my_cells):
+    i = 0
+    if player == "red":
+        i = 1
+    cnt = 0
+    k = cell[i]
+    for c in my_cells:
+        if c[i] == k:
+            cnt += 1
+    return cnt
+
+
 # Find optimal cells for start and goal to win
 def start_goal(player, my_cells, op_cells, board):
     # Find cells which is nearest to the (red/blue) border
@@ -154,49 +168,146 @@ def start_goal(player, my_cells, op_cells, board):
 
     # If the player hasn't occupied any cells, head and tail will be assumed as the center
     x = board.size - 1
+    heads = []
+    tails = []
+
     if len(my_cells) == 0:
         c = (x + 1) >> 1
-        head = (c, c)
-        tail = (c, c)
+        heads.append((c, c))
+        tails.append((c, c))
     else:
-        head = my_cells[0]
-        tail = my_cells[-1]
+        i = 1
+        if player == "red":
+            i = 0
+        min_v = my_cells[0][i]
+        max_v = my_cells[-1][i]
+        for c in my_cells:
+            if c[i] == min_v:
+                heads.append(c)
+            if c[i] == max_v:
+                tails.append(c)
 
-    start = head
-    goal = tail
-    # Red player, check top and bottom border
-    if player == "red":
-        # Confirm start position
-        # Head is not on the border
-        if head[0] != 0:
-            # Nearest start from head
-            start = (0, head[1])
-            # Check if the start is occupied by opponent
-            if start in op_cells:
-                start = find_r_border(start, board, op_cells, bottom=True)
+    start = heads[0]
+    min_dis = x
+    max_line = 0
+    for head in heads:
+        # Red player, check bottom border
+        if player == "red":
+            curr_line = num_one_line(player, head, my_cells)
+            if curr_line < max_line:
+                continue
+            max_line = curr_line
+            start = head
+            if head[0] != 0:
+                # Nearest start from head
+                temp_start = (0, head[1])
+                # Check if the start is occupied by opponent
+                if temp_start in op_cells:
+                    temp_start = find_r_border(temp_start, board, op_cells, bottom=True)
+                temp_dis = manhattan(head, temp_start)
+                if temp_dis <= min_dis:
+                    start = temp_start
+                    min_dis = temp_dis
 
-        # Find the nearest goal, same logic as finding the nearest start
-        if tail[0] != x:
-            goal = (x, tail[1])
-            if goal in op_cells:
-                goal = find_r_border(goal, board, op_cells, bottom=False)
+        # Blue player, check left border
+        else:
+            curr_line = num_one_line(player, head, my_cells)
+            if curr_line < max_line:
+                continue
+            max_line = curr_line
+            start = head
+            if head[1] != 0:
+                temp_start = (head[0], 0)
+                if temp_start in op_cells:
+                    temp_start = find_q_border(temp_start, board, op_cells, left=True)
+                temp_dis = manhattan(head, temp_start)
+                if temp_dis <= min_dis:
+                    start = temp_start
+                    min_dis = temp_dis
 
-    # Blue player, check left and right border
-    # Same logic as red
-    else:
-        if head[1] != 0:
-            start = (head[0], 0)
-            if start in op_cells:
-                start = find_q_border(start, board, op_cells, left=True)
-        if tail[1] != x:
-            goal = (tail[0], x)
-            if goal in op_cells:
-                goal = find_q_border(goal, board, op_cells, left=False)
+    goal = tails[0]
+    min_dis = x
+    max_line = 0
+    for tail in tails:
+        # Red player, check top border
+        if player == "red":
+            curr_line = num_one_line(player, tail, my_cells)
+            if curr_line < max_line:
+                continue
+            max_line = curr_line
+            goal = tail
+            if tail[0] != x:
+                temp_goal = (x, tail[1])
+                if temp_goal in op_cells:
+                    temp_goal = find_r_border(temp_goal, board, op_cells, bottom=False)
+                temp_dis = manhattan(tail, temp_goal)
+                if temp_dis <= min_dis:
+                    goal = temp_goal
+                    min_dis = temp_dis
+
+        # Blue player, check right border
+        else:
+            curr_line = num_one_line(player, tail, my_cells)
+            if curr_line < max_line:
+                continue
+            max_line = curr_line
+            goal = tail
+            if tail[1] != x:
+                temp_goal = (tail[0], x)
+                if temp_goal in op_cells:
+                    temp_goal = find_q_border(temp_goal, board, op_cells, left=False)
+                temp_dis = manhattan(tail, temp_goal)
+                if temp_dis <= min_dis:
+                    goal = temp_goal
+                    min_dis = temp_dis
 
     return start, goal
 
+
+# Check if the cell can be the goal state
+def is_goal(player, cell, board):
+    x = board.size - 1
+    if player == "red":
+        return cell[0] == x
+    return cell[1] == x
+
+
 # Compute the lowest cost for the player to win at current state
-# def min_win_cost(player, my_cells, op_cells, board):
-#     # Decide optimal positions for start and goal
-#
-#     # Use A* search to find the minimum cost from start to goal
+def min_win_cost(player, my_cells, op_cells, board):
+    # Find optimal positions for start and goal
+    start, goal = start_goal(player, my_cells, op_cells, board)
+
+    # Use A* search to find the minimum cost from start to goal
+    # Similar to Part A
+    queue = [(start, 0)]
+
+    # Keep records of explored cells
+    # Format: {current cell: (last cell, f(x))}
+    explored = {start: (None, 1)}
+    if start in my_cells:
+        explored = {start: (None, 0)}
+
+    while len(queue) > 0:
+        # Pop and expand the cell with lowest f(x)
+        curr_cell = queue.pop(0)[0]
+        neighbour_list = board.neighbours(curr_cell)
+        for next_cell in neighbour_list:
+            if next_cell in op_cells:
+                continue
+
+            new_cost = explored[curr_cell][1] + 1
+            if next_cell in my_cells:
+                new_cost -= 1
+
+            # Goal test upon expansion
+            if next_cell == goal or is_goal(player, next_cell, board):
+                explored[next_cell] = (curr_cell, new_cost)
+                return next_cell, explored
+
+            # Calculate f(x) of new cell and push it to the priority queue
+            if next_cell not in explored.keys() or new_cost < explored[next_cell][1]:
+                explored[next_cell] = (curr_cell, new_cost)
+                queue.append((next_cell, new_cost + manhattan(next_cell, goal) - len(my_cells)))
+            queue.sort(key=lambda x: x[1])
+
+    return goal, explored

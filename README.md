@@ -38,6 +38,15 @@
     * 7 same game configurations
     * 343 turns
 
+> Evaluation Function 要素
+* 我方和敌方当前连续棋子的最大长度 ✔
+* 我方和敌方当前距离胜利还需要几步 ✔
+  * 寻找最优起始点 ✔
+    * 优先选择存在更多棋子的同行（蓝）或同列（红）✔
+    * 若没有棋子在边界，选择距离所有棋子最近的边界点 ✔
+  * A* Search ✔
+    * Heuristic function: Manhattan distance - 现存棋子数 ✔
+
 > 实现 MiniMax
 
 > 实现 α-β Pruning
@@ -47,13 +56,6 @@
 * Random ✔
 * Basic Utility Function
 * Same Strategy as Player
-
-> Evaluation Function 要素
-* 我方和敌方当前连续棋子的最大长度 ✔
-* 我方和敌方当前距离胜利还需要几步
-  * 找到最近的可使用的起点和终点 ✔
-  * A* Search
-  * Heuristic function: Manhattan distance - 现存棋子数
 
 > 记录对战棋局, 生成训练数据
 

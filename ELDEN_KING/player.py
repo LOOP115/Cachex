@@ -33,20 +33,26 @@ class Player:
             cell = (int(cmd[1]), int(cmd[2]))
 
         sides = split_board(self.player, cell, self.board)
+        print(f"Red  Cells: {sides[0]}")
+        print(f"Blue Cells: {sides[1]}")
 
         # Check max path
-        # print(sides[0])
-        # print(sides[1])
-        # max_len0 = max_path_length(sides[0], self.board)
-        # max_len1 = max_path_length(sides[1], self.board)
-        # print(max_len0)
-        # print(max_len1)
+        max_len0 = max_path_length(sides[0], self.board)
+        max_len1 = max_path_length(sides[1], self.board)
+        print(f"Max Path Red:  {max_len0}")
+        print(f"Max Path Blue: {max_len1}")
 
         # Check start and goal
-        # start, goal = start_goal("red", sides[0], sides[1], self.board)
-        # start, goal = start_goal("blue", sides[1], sides[0], self.board)
-        # print(start)
-        # print(goal)
+        start1, goal1 = start_goal("red", sides[0], sides[1], self.board)
+        start2, goal2 = start_goal("blue", sides[1], sides[0], self.board)
+        print(f"Red   Start: {start1}  Goal: {goal1}")
+        print(f"Blue  Start: {start2}  Goal: {goal2}")
+
+        # Check A* results
+        target1, exp1 = min_win_cost("red", sides[0], sides[1], self.board)
+        target2, exp2 = min_win_cost("blue", sides[1], sides[0], self.board)
+        print(f"Red   Goal: {target1}  Step: {exp1[target1][1]}")
+        print(f"Blue  Goal: {target2}  Step: {exp2[target2][1]}")
 
         return place_action(cell)
 
