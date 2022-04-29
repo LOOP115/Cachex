@@ -30,11 +30,9 @@
 
 ### Progress Check List
 
-> 跑通下棋对战 ✔
-
 > 校验 Rules
 * Swap Rule (STEAL)  后期实现，胜率 > 50% 的初始位置可以进行替换
-* Starting with a hex in the center is illegal ✔
+* Starting with a hex in the center is illegal ✔ (Board 可能还需要改，illegal 但是 turn 仍然 +1)
 * Capture ✔
 * Draw （交由 Referee 裁决）✔
     * 7 same game configurations
@@ -51,10 +49,11 @@
 * Same Strategy as Player
 
 > Evaluation Function 要素
-* 己方当前连续棋子的最大长度 ✔
-* 己方当前距离胜利还需要几步
-* 对方当前连续棋子的最大长度 ✔
-* 对方当前距离胜利还需要几步
+* 我方和敌方当前连续棋子的最大长度 ✔
+* 我方和敌方当前距离胜利还需要几步
+  * 找到最近的可使用的起点和终点 ✔
+  * A* Search
+  * Heuristic function: Manhattan distance - 现存棋子数
 
 > 记录对战棋局, 生成训练数据
 

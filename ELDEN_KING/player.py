@@ -1,6 +1,6 @@
 from ELDEN_KING.board import *
 from ELDEN_KING.utils import *
-from ELDEN_KING.strategy import *
+
 
 class Player:
 
@@ -32,14 +32,21 @@ class Player:
             cmd = cmd.split(",")
             cell = (int(cmd[1]), int(cmd[2]))
 
+        sides = split_board(self.player, cell, self.board)
+
         # Check max path
-        # sides = split_board(self.player, cell, self.board)
         # print(sides[0])
         # print(sides[1])
         # max_len0 = max_path_length(sides[0], self.board)
         # max_len1 = max_path_length(sides[1], self.board)
         # print(max_len0)
         # print(max_len1)
+
+        # Check start and goal
+        # start, goal = start_goal("red", sides[0], sides[1], self.board)
+        # start, goal = start_goal("blue", sides[1], sides[0], self.board)
+        # print(start)
+        # print(goal)
 
         return place_action(cell)
 
