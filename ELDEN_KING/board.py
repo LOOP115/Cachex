@@ -23,6 +23,11 @@ class Board:
             self.player_dict["red"] = "o"
             self.player_dict["blue"] = "m"
 
+        self.empty_cells = []
+        for i in range(size):
+            for j in range(size):
+                self.empty_cells.append((i, j))
+
     # Check if the cell is in bounds
     def in_bounds(self, cell):
         return 0 <= cell[0] < self.size and 0 <= cell[1] < self.size
@@ -31,6 +36,7 @@ class Board:
     def make_move(self, cell, player):
         self.board_dict[cell] = self.player_dict[player]
         self.turn += 1
+        self.empty_cells.remove(cell)
 
     # Print board dict
     def print_board_dict(self):
@@ -114,5 +120,9 @@ class Board:
 
     # Remove pieces that have been captured
     def capture_remove(self, cells):
-        self.board_dict.pop(cells[0])
-        self.board_dict.pop(cells[1])
+        c1 = cells[0]
+        c2 = cells[1]
+        self.board_dict.pop(c1)
+        self.board_dict.pop(c2)
+        self.empty_cells.append(c1)
+        self.empty_cells.append(c2)

@@ -322,6 +322,8 @@ def min_win_cost(player, my_cells, op_cells, board):
 # Find the goal state with the least cost
 def best_goal(goals, explored):
     min_cost = 100
+    if len(goals) == 0:
+        return None, None
     res = goals[0]
     for goal in goals:
         cost = explored[goal][1]
@@ -329,3 +331,25 @@ def best_goal(goals, explored):
             res = goal
             min_cost = cost
     return res, min_cost
+
+
+# Get all possible actions in current turn
+def get_actions(board):
+    n = board.size
+    t = board.turn
+    actions = []
+    # In first turn, we can consider only half of the board due to symmetry
+    if t == 1:
+        for i in range(n):
+            for j in range(n - i):
+                actions.append((i, j))
+        # Check center
+        c = n >> 1
+        cell = (c, c)
+        if not board.legal_first_move(cell):
+            actions.remove(cell)
+        return actions
+    # In second turn, we can consider the half where our opponent placed and decide if to steal
+
+    # Normally, just extract the empty cells from board
+    return board.empty_cells

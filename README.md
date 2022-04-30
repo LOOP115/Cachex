@@ -48,8 +48,11 @@
     * Heuristic function: Manhattan distance - 现存棋子数 ✔
     * 搜索过程中可能已经到达边界，记录最短步数 ✔
 
-> 实现 MiniMax
-* 生成所有可能的 actions
+>生成所有可能的 actions
+* 第一回合利用 symmetry ✔
+* 第二回合考虑 STEAL
+
+> 实现 MiniMax ✔
 
 > 实现 α-β Pruning
 

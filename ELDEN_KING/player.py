@@ -1,5 +1,6 @@
 from ELDEN_KING.board import *
 from ELDEN_KING.utils import *
+from ELDEN_KING.strategy import *
 
 
 class Player:
@@ -22,6 +23,10 @@ class Player:
         Called at the beginning of your turn. Based on the current state
         of the game, select an action to play.
         """
+        # Check Mini Max
+        test_action = minimax("red", self.board)
+        print(test_action)
+
         # self.board.print_board_dict()
         cmd = input()
         cmd = cmd.split(",")
@@ -32,29 +37,35 @@ class Player:
             cmd = cmd.split(",")
             cell = (int(cmd[1]), int(cmd[2]))
 
-        sides = split_board(self.player, cell, self.board)
-        print(f"Red  Cells: {sides[0]}")
-        print(f"Blue Cells: {sides[1]}")
+        check = True
+        if check:
+            sides = split_board(self.player, cell, self.board)
+            print(f"Red  Cells: {sides[0]}")
+            print(f"Blue Cells: {sides[1]}")
 
-        # Check max path
-        max_len0 = max_path_length(sides[0], self.board)
-        max_len1 = max_path_length(sides[1], self.board)
-        print(f"Max Path Red:  {max_len0}")
-        print(f"Max Path Blue: {max_len1}")
+            # Check max path
+            max_len0 = max_path_length(sides[0], self.board)
+            max_len1 = max_path_length(sides[1], self.board)
+            print(f"Max Path Red:  {max_len0}")
+            print(f"Max Path Blue: {max_len1}")
 
-        # Check start and goal
-        start1, goal1 = start_goal("red", sides[0], sides[1], self.board)
-        start2, goal2 = start_goal("blue", sides[1], sides[0], self.board)
-        print(f"Red   Start: {start1}  Goal: {goal1}")
-        print(f"Blue  Start: {start2}  Goal: {goal2}")
+            # Check start and goal
+            start1, goal1 = start_goal("red", sides[0], sides[1], self.board)
+            start2, goal2 = start_goal("blue", sides[1], sides[0], self.board)
+            print(f"Red   Start: {start1}  Goal: {goal1}")
+            print(f"Blue  Start: {start2}  Goal: {goal2}")
 
-        # Check A* results
-        goals1, exp1 = min_win_cost("red", sides[0], sides[1], self.board)
-        goals2, exp2 = min_win_cost("blue", sides[1], sides[0], self.board)
-        goal1, cost1 = best_goal(goals1, exp1)
-        goal2, cost2 = best_goal(goals2, exp2)
-        print(f"Red   Goal: {goal1}  Step: {cost1}")
-        print(f"Blue  Goal: {goal2}  Step: {cost2}")
+            # Check A*
+            goals1, exp1 = min_win_cost("red", sides[0], sides[1], self.board)
+            goals2, exp2 = min_win_cost("blue", sides[1], sides[0], self.board)
+            goal1, cost1 = best_goal(goals1, exp1)
+            goal2, cost2 = best_goal(goals2, exp2)
+            print(f"Red   Goal: {goal1}  Step: {cost1}")
+            print(f"Blue  Goal: {goal2}  Step: {cost2}")
+
+            # Check action list
+            # action_list = get_actions(self.board)
+            # print(action_list)
 
         return place_action(cell)
 
