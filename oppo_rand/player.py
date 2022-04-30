@@ -19,7 +19,6 @@ class Player:
 
     def turn(self, player, action):
         cell = (action[1], action[2])
-        self.board.place_cell(cell)
         result = self.board.can_capture(cell, player)
         if result is not None:
             self.board.capture_remove(result[1])

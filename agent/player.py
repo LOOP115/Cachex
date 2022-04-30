@@ -1,6 +1,6 @@
-from ELDEN_KING.board import *
-from ELDEN_KING.utils import *
-from ELDEN_KING.strategy import *
+from agent.board import *
+from agent.utils import *
+from agent.strategy import *
 
 
 class Player:
@@ -38,7 +38,7 @@ class Player:
                 cmd = cmd.split(",")
                 cell = (int(cmd[1]), int(cmd[2]))
 
-        check = True
+        check = False
         if check:
 
             # self.board.print_board_dict()
@@ -66,13 +66,9 @@ class Player:
             print(f"Red   Goal: {goal1}  Step: {cost1}")
             print(f"Blue  Goal: {goal2}  Step: {cost2}")
 
-            # Check utility
-
-            print(f"")
-
             # Check action list
-            action_list = get_actions(self.board)
-            print(f"Action list: {action_list}")
+            # action_list = get_actions(self.board)
+            # print(action_list)
 
         return place_action(cell)
 

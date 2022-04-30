@@ -27,10 +27,6 @@ class Board:
             self.player_dict["red"] = "o"
             self.player_dict["blue"] = "m"
 
-    # Update empty_cells after actions
-    def place_cell(self, cell):
-        self.empty_cells.remove(cell)
-
     # Check if the cell is in bounds
     def in_bounds(self, cell):
         return 0 <= cell[0] < self.size and 0 <= cell[1] < self.size
@@ -39,6 +35,7 @@ class Board:
     def make_move(self, cell, player):
         self.board_dict[cell] = self.player_dict[player]
         self.turn += 1
+        self.empty_cells.remove(cell)
 
     # Print board dict
     def print_board_dict(self):

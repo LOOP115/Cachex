@@ -1,4 +1,4 @@
-from ELDEN_KING.utils import *
+from agent.utils import *
 
 
 class Board:

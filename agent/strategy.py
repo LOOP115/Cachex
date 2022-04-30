@@ -1,8 +1,8 @@
 from math import inf
 from copy import deepcopy
-from ELDEN_KING.utils import *
+from agent.utils import *
 
-MAX_DEPTH = 2
+MAX_DEPTH = 1
 
 # Evaluation function
 def utility_value(players, action, board):
