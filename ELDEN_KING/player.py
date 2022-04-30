@@ -49,10 +49,12 @@ class Player:
         print(f"Blue  Start: {start2}  Goal: {goal2}")
 
         # Check A* results
-        target1, exp1 = min_win_cost("red", sides[0], sides[1], self.board)
-        target2, exp2 = min_win_cost("blue", sides[1], sides[0], self.board)
-        print(f"Red   Goal: {target1}  Step: {exp1[target1][1]}")
-        print(f"Blue  Goal: {target2}  Step: {exp2[target2][1]}")
+        goals1, exp1 = min_win_cost("red", sides[0], sides[1], self.board)
+        goals2, exp2 = min_win_cost("blue", sides[1], sides[0], self.board)
+        goal1, cost1 = best_goal(goals1, exp1)
+        goal2, cost2 = best_goal(goals2, exp2)
+        print(f"Red   Goal: {goal1}  Step: {cost1}")
+        print(f"Blue  Goal: {goal2}  Step: {cost2}")
 
         return place_action(cell)
 

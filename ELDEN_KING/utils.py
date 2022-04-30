@@ -287,6 +287,7 @@ def min_win_cost(player, my_cells, op_cells, board):
     if start in my_cells:
         explored = {start: (None, 0)}
 
+    goals = []
     while len(queue) > 0:
         # Pop and expand the cell with lowest f(x)
         curr_cell = queue.pop(0)[0]
@@ -295,19 +296,36 @@ def min_win_cost(player, my_cells, op_cells, board):
             if next_cell in op_cells:
                 continue
 
+            # Update the cost to new cell, the cost is 0 if the cell is occupied by us
             new_cost = explored[curr_cell][1] + 1
             if next_cell in my_cells:
                 new_cost -= 1
 
             # Goal test upon expansion
-            if next_cell == goal or is_goal(player, next_cell, board):
+            if next_cell == goal:
                 explored[next_cell] = (curr_cell, new_cost)
-                return next_cell, explored
+                goals.append(next_cell)
+                return goals, explored
 
             # Calculate f(x) of new cell and push it to the priority queue
             if next_cell not in explored.keys() or new_cost < explored[next_cell][1]:
                 explored[next_cell] = (curr_cell, new_cost)
+                # If the border is reached, record it to find the goal state with the least cost
+                if is_goal(player, next_cell, board):
+                    goals.append(next_cell)
                 queue.append((next_cell, new_cost + manhattan(next_cell, goal) - len(my_cells)))
             queue.sort(key=lambda x: x[1])
 
-    return goal, explored
+    return goals, explored
+
+
+# Find the goal state with the least cost
+def best_goal(goals, explored):
+    min_cost = 100
+    res = goals[0]
+    for goal in goals:
+        cost = explored[goal][1]
+        if cost < min_cost:
+            res = goal
+            min_cost = cost
+    return res, min_cost
