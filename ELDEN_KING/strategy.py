@@ -2,7 +2,7 @@ from math import inf
 from copy import deepcopy
 from ELDEN_KING.utils import *
 
-MAX_DEPTH = 2
+MAX_DEPTH = 4
 
 # Evaluation function
 def utility_value(players, action, board):
@@ -30,11 +30,11 @@ def utility_value(players, action, board):
     if op_win_cost == 0:
         op_win_cost = 0.1
 
-    res = my_max_path - op_max_path + (n / my_win_cost) - (n / op_win_cost)
+    res = my_max_path - op_max_path + 5 * (n / my_win_cost) - 5 * (n / op_win_cost)
     return res
 
 
-# Mini Max
+# Mini Max with alpha-beta pruning
 def minimax(player, board):
     players = []
     if player == "red":
@@ -48,23 +48,15 @@ def minimax(player, board):
     value = -inf
     res = actions[0]
     for action in actions:
-        board_clone = deepcopy(board)
-        board_clone.make_move(action, player)
-
-        temp_value = -inf
-        op_actions = get_actions(board_clone)
-        for op_action in op_actions:
-            temp = min_value(players, op_action, board_clone, 0)
-            temp_value = max(temp, temp_value)
-
-        if temp_value > value:
-            value = temp_value
+        temp = max_value(players, action, board, 0, -inf, inf)
+        if temp > value:
+            value = temp
             res = action
     return res
 
 
-def max_value(players, action, board, depth):
-    # Terminal test
+def max_value(players, action, board, depth, alpha, beta):
+    # Termination test
     if depth == MAX_DEPTH:
         return utility_value(players, action, board)
 
@@ -79,15 +71,19 @@ def max_value(players, action, board, depth):
     actions = get_actions(board_clone)
 
     for action in actions:
-        value = max(value, min_value(players, action, board_clone, depth+1))
+        # Ignore bad actions
+        value = max(value, min_value(players, action, board_clone, depth+1, alpha, beta))
+        if value >= beta:
+            return value
+        alpha = max(alpha, value)
     return value
 
 
-def min_value(players, action, board, depth):
+def min_value(players, action, board, depth, alpha, beta):
     # Change side
     temp_players = [players[1], players[0]]
 
-    # Terminal test
+    # Termination test
     if depth == MAX_DEPTH:
         return utility_value(temp_players, action, board)
 
@@ -102,5 +98,8 @@ def min_value(players, action, board, depth):
     actions = get_actions(board_clone)
 
     for action in actions:
-        value = min(value, max_value(players, action, board_clone, depth+1))
+        value = min(value, max_value(players, action, board_clone, depth+1, alpha, beta))
+        if value <= alpha:
+            return value
+        beta = min(beta, value)
     return value

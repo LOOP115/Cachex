@@ -56,7 +56,7 @@
 
 > 实现 MiniMax ✔
 
-> 实现 α-β Pruning
+> 实现 α-β Pruning ✔
 
 > 构造 Opponent
 * Human ✔
