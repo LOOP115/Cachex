@@ -3,6 +3,14 @@ def place_action(cell):
     return tuple(["PLACE", cell[0], cell[1]])
 
 
+# Return the color of opponent
+def opponent(player):
+    oppo = "red"
+    if player == "red":
+        oppo = "blue"
+    return oppo
+
+
 # Compute manhattan distance of hexagonal grids
 # Same as Part A
 # https://stackoverflow.com/questions/5084801/manhattan-distance-between-tiles-in-a-hexagonal-grid
@@ -367,3 +375,16 @@ def get_actions(board):
 
     # Normally, just extract the empty cells from board
     return board.empty_cells
+
+
+# Check if the player can win
+def is_win(player, size, max_path, cells):
+    if max_path < size:
+        return False
+
+    if player == "red":
+        cells.sort()
+        return cells[0][0] == 0 and cells[-1][0] == size - 1
+    else:
+        cells.sort(key=lambda l: l[1])
+        return cells[0][1] == 0 and cells[-1][1] == size - 1

@@ -15,10 +15,6 @@ class Board:
         self.size = size
         self.turn = 1
         self.board_dict = {}
-        self.empty_cells = []
-        for i in range(size):
-            for j in range(size):
-                self.empty_cells.append((i, j))
         self.player_dict = {}
         if player == "red":
             self.player_dict["red"] = "m"
@@ -26,6 +22,10 @@ class Board:
         else:
             self.player_dict["red"] = "o"
             self.player_dict["blue"] = "m"
+        self.empty_cells = []
+        for i in range(size):
+            for j in range(size):
+                self.empty_cells.append((i, j))
 
     # Check if the cell is in bounds
     def in_bounds(self, cell):
@@ -89,37 +89,51 @@ class Board:
             if c in self.board_dict.keys() and self.board_dict[c][0] == op:
                 op_cells.append(c)
 
+        capture_list = []
+
         # Impossible to capture if number of neighbours is less than 2
         if len(op_cells) < 2:
-            return None
+            return capture_list
 
         # Type 1: 1 unit distance
-        my_cells = []
+        my_cells1 = []
         for c in neighbour_cells:
             if c in self.board_dict.keys() and self.board_dict[c][0] == my:
-                my_cells.append(c)
+                my_cells1.append(c)
 
+        my_cells2 = []
         # Type 2: 2 unit distance in diagonal directions
         diagonal_cells = self.neighbours_diagonal(cell)
         for c in diagonal_cells:
             if c in self.board_dict.keys() and self.board_dict[c][0] == my:
-                my_cells.append(c)
+                my_cells2.append(c)
 
         # Check if there exists a capture
-        for m in my_cells:
+        for m in my_cells1:
             temp_capture = []
             for o in op_cells:
                 if (manhattan(cell, o) == 1) and (manhattan(m, o) == 1):
                     temp_capture.append(o)
                 # Success capture
                 if len(temp_capture) == 2:
-                    print("capture!")
-                    return m, temp_capture
+                    # print("capture!")
+                    capture_list.append(temp_capture)
+                    break
+
+        for m in my_cells2:
+            temp_capture = []
+            for o in op_cells:
+                if (manhattan(cell, o) == 1) and (manhattan(m, o) == 1):
+                    temp_capture.append(o)
+                # Success capture
+                if len(temp_capture) == 2:
+                    # print("capture!")
+                    capture_list.append(temp_capture)
+                    break
+
+        return capture_list
 
     # Remove pieces that have been captured
-    # Add the captured cells back to list of empty cells
-    def capture_remove(self, cells):
-        self.board_dict.pop(cells[0])
-        self.board_dict.pop(cells[1])
-        self.empty_cells.append(cells[0])
-        self.empty_cells.append(cells[1])
+    def capture_remove(self, cell):
+        self.board_dict.pop(cell)
+        self.empty_cells.append(cell)

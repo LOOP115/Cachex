@@ -23,54 +23,56 @@ class Player:
         Called at the beginning of your turn. Based on the current state
         of the game, select an action to play.
         """
-        # Check Mini Max
-        cell = minimax("red", self.board)
-        # print(cell)
+        # Decision
+        decision = minimax(self.player, self.board)
+        cell = decision[0]
 
         manual = False
         if manual:
             cmd = input()
             cmd = cmd.split(",")
-            cell = (int(cmd[1]), int(cmd[2]))
+            cell = (int(cmd[0]), int(cmd[1]))
             # The first move cannot be the center of the board
             if (self.board.turn == 1) and (not self.board.legal_first_move(cell)):
                 cmd = input()
                 cmd = cmd.split(",")
-                cell = (int(cmd[1]), int(cmd[2]))
+                cell = (int(cmd[0]), int(cmd[1]))
 
         check = True
         if check:
-
-            # self.board.print_board_dict()
-            sides = split_board(self.player, cell, self.board)
-            print(f"Red  Cells: {sides[0]}")
-            print(f"Blue Cells: {sides[1]}")
+            my = self.player
+            op = opponent(my)
+            print(f"\n# Side: {my}")
+            print(f"# Take {cell} with utility of {decision[1]}")
+            sides = split_board(my, cell, self.board)
+            print(f"# {my} cells: {sides[0]}")
+            print(f"# {op} cells: {sides[1]}")
 
             # Check max path
             max_len0 = max_path_length(sides[0], self.board)
             max_len1 = max_path_length(sides[1], self.board)
-            print(f"Max Path Red:  {max_len0}")
-            print(f"Max Path Blue: {max_len1}")
+            print(f"# {my} max path: {max_len0}")
+            print(f"# {op} max path: {max_len1}")
 
             # Check start and goal
-            start1, goal1 = start_goal("red", sides[0], sides[1], self.board)
-            start2, goal2 = start_goal("blue", sides[1], sides[0], self.board)
-            print(f"Red   Start: {start1}  Goal: {goal1}")
-            print(f"Blue  Start: {start2}  Goal: {goal2}")
+            start1, goal1 = start_goal(my, sides[0], sides[1], self.board)
+            start2, goal2 = start_goal(op, sides[1], sides[0], self.board)
+            print(f"# {my}  start: {start1}  goal: {goal1}")
+            print(f"# {op}  start: {start2}  goal: {goal2}")
 
             # Check A*
-            goals1, exp1 = min_win_cost("red", sides[0], sides[1], self.board)
-            goals2, exp2 = min_win_cost("blue", sides[1], sides[0], self.board)
+            goals1, exp1 = min_win_cost(my, sides[0], sides[1], self.board)
+            goals2, exp2 = min_win_cost(op, sides[1], sides[0], self.board)
             goal1, cost1 = best_goal(goals1, exp1)
             goal2, cost2 = best_goal(goals2, exp2)
-            print(f"Red   Goal: {goal1}  Step: {cost1}")
-            print(f"Blue  Goal: {goal2}  Step: {cost2}")
+            print(f"# {my}  goal: {goal1}  cost: {cost1}")
+            print(f"# {op}  goal: {goal2}  cost: {cost2}")
 
             # Check utility
 
             # Check action list
             action_list = get_actions(self.board)
-            print(f"Action list: {action_list}")
+            print(f"# actions: {action_list}\n")
 
         return place_action(cell)
 
@@ -85,12 +87,8 @@ class Player:
         the same as what your player returned from the action method
         above. However, the referee has validated it at this point.
         """
-        # print(f"Turn: {self.side}")
-        # print(player)
-        # print(action)
         cell = (action[1], action[2])
         result = self.board.can_capture(cell, player)
-        # print(result)
         for r in unique_captures(result):
             self.board.capture_remove(r)
         self.board.make_move(cell, player)

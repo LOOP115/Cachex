@@ -2,7 +2,7 @@ from math import inf
 from copy import deepcopy
 from agent.utils import *
 
-MAX_DEPTH = 1
+MAX_DEPTH = 2
 
 # Evaluation function
 def utility_value(players, action, board):
@@ -18,7 +18,7 @@ def utility_value(players, action, board):
     op_win_cost = best_goal(op_win, op_path)[1]
 
     # Max utility value if the action can lead to win
-    if my_win_cost == 0:
+    if my_win_cost == 0 or my_win_cost == 1:
         return inf
 
     if my_win_cost is None:
@@ -27,10 +27,10 @@ def utility_value(players, action, board):
     if op_win_cost is None:
         op_win_cost = n
 
-    if op_win_cost == 0:
+    if op_win_cost == 0 or op_win_cost == 1:
         op_win_cost = 0.1
 
-    res = my_max_path - op_max_path + 5 * (n / my_win_cost) - 5 * (n / op_win_cost)
+    res = my_max_path - op_max_path + (n / my_win_cost) - (n / op_win_cost)
     return res
 
 

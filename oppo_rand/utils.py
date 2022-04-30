@@ -12,3 +12,11 @@ def manhattan(src, target):
         return abs(dx + dy)
     else:
         return max(abs(dx), abs(dy))
+
+# Remove redundant captures
+def unique_captures(captures):
+    res = []
+    for c in captures:
+        res.append(c[0])
+        res.append(c[1])
+    return list(set(res))

@@ -108,7 +108,6 @@ class Board:
             if c in self.board_dict.keys() and self.board_dict[c][0] == my:
                 my_cells2.append(c)
 
-
         # Check if there exists a capture
         for m in my_cells1:
             temp_capture = []
