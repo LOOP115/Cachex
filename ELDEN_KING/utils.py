@@ -204,6 +204,8 @@ def start_goal(player, my_cells, op_cells, board):
                 # Check if the start is occupied by opponent
                 if temp_start in op_cells:
                     temp_start = find_r_border(temp_start, board, op_cells, bottom=True)
+                if temp_start is None:
+                    continue
                 temp_dis = manhattan(head, temp_start)
                 if temp_dis <= min_dis:
                     start = temp_start
@@ -220,6 +222,8 @@ def start_goal(player, my_cells, op_cells, board):
                 temp_start = (head[0], 0)
                 if temp_start in op_cells:
                     temp_start = find_q_border(temp_start, board, op_cells, left=True)
+                if temp_start is None:
+                    continue
                 temp_dis = manhattan(head, temp_start)
                 if temp_dis <= min_dis:
                     start = temp_start
@@ -240,6 +244,8 @@ def start_goal(player, my_cells, op_cells, board):
                 temp_goal = (x, tail[1])
                 if temp_goal in op_cells:
                     temp_goal = find_r_border(temp_goal, board, op_cells, bottom=False)
+                if temp_goal is None:
+                    continue
                 temp_dis = manhattan(tail, temp_goal)
                 if temp_dis <= min_dis:
                     goal = temp_goal
@@ -256,6 +262,8 @@ def start_goal(player, my_cells, op_cells, board):
                 temp_goal = (tail[0], x)
                 if temp_goal in op_cells:
                     temp_goal = find_q_border(temp_goal, board, op_cells, left=False)
+                if temp_goal is None:
+                    continue
                 temp_dis = manhattan(tail, temp_goal)
                 if temp_dis <= min_dis:
                     goal = temp_goal

@@ -24,21 +24,24 @@ class Player:
         of the game, select an action to play.
         """
         # Check Mini Max
-        test_action = minimax("red", self.board)
-        print(test_action)
+        cell = minimax("red", self.board)
+        print(cell)
 
-        # self.board.print_board_dict()
-        cmd = input()
-        cmd = cmd.split(",")
-        cell = (int(cmd[1]), int(cmd[2]))
-        # The first move cannot be the center of the board
-        if (self.board.turn == 1) and (not self.board.legal_first_move(cell)):
+        manual = False
+        if manual:
             cmd = input()
             cmd = cmd.split(",")
             cell = (int(cmd[1]), int(cmd[2]))
+            # The first move cannot be the center of the board
+            if (self.board.turn == 1) and (not self.board.legal_first_move(cell)):
+                cmd = input()
+                cmd = cmd.split(",")
+                cell = (int(cmd[1]), int(cmd[2]))
 
-        check = True
+        check = False
         if check:
+
+            # self.board.print_board_dict()
             sides = split_board(self.player, cell, self.board)
             print(f"Red  Cells: {sides[0]}")
             print(f"Blue Cells: {sides[1]}")
