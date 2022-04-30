@@ -15,6 +15,15 @@ def manhattan(src, target):
         return max(abs(dx), abs(dy))
 
 
+# Remove redundant captures
+def unique_captures(captures):
+    res = []
+    for c in captures:
+        res.append(c[0])
+        res.append(c[1])
+    return list(set(res))
+
+
 # Split pieces into two lists after the player's move, one for player and the other for opponent
 def split_board(player, move, board):
     my_cells = []
@@ -27,13 +36,10 @@ def split_board(player, move, board):
     my_cells.append(move)
 
     # Check if my move will perform a capture
-    capture = board.can_capture(move, player)
-    if capture is not None:
-        op_cells.remove(capture[0])
-        op_cells.remove(capture[1])
+    captures = board.can_capture(move, player)
+    for c in unique_captures(captures):
+        op_cells.remove(c)
 
-    # my_cells.sort()
-    # op_cells.sort()
     return my_cells, op_cells
 
 

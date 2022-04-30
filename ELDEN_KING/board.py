@@ -89,24 +89,28 @@ class Board:
             if c in self.board_dict.keys() and self.board_dict[c][0] == op:
                 op_cells.append(c)
 
+        capture_list = []
+
         # Impossible to capture if number of neighbours is less than 2
         if len(op_cells) < 2:
-            return None
+            return capture_list
 
         # Type 1: 1 unit distance
-        my_cells = []
+        my_cells1 = []
         for c in neighbour_cells:
             if c in self.board_dict.keys() and self.board_dict[c][0] == my:
-                my_cells.append(c)
+                my_cells1.append(c)
 
+        my_cells2 = []
         # Type 2: 2 unit distance in diagonal directions
         diagonal_cells = self.neighbours_diagonal(cell)
         for c in diagonal_cells:
             if c in self.board_dict.keys() and self.board_dict[c][0] == my:
-                my_cells.append(c)
+                my_cells2.append(c)
+
 
         # Check if there exists a capture
-        for m in my_cells:
+        for m in my_cells1:
             temp_capture = []
             for o in op_cells:
                 if (manhattan(cell, o) == 1) and (manhattan(m, o) == 1):
@@ -114,14 +118,23 @@ class Board:
                 # Success capture
                 if len(temp_capture) == 2:
                     # print("capture!")
-                    return temp_capture
-        return None
+                    capture_list.append(temp_capture)
+                    break
+
+        for m in my_cells2:
+            temp_capture = []
+            for o in op_cells:
+                if (manhattan(cell, o) == 1) and (manhattan(m, o) == 1):
+                    temp_capture.append(o)
+                # Success capture
+                if len(temp_capture) == 2:
+                    # print("capture!")
+                    capture_list.append(temp_capture)
+                    break
+
+        return capture_list
 
     # Remove pieces that have been captured
-    def capture_remove(self, cells):
-        c1 = cells[0]
-        c2 = cells[1]
-        self.board_dict.pop(c1)
-        self.board_dict.pop(c2)
-        self.empty_cells.append(c1)
-        self.empty_cells.append(c2)
+    def capture_remove(self, cell):
+        self.board_dict.pop(cell)
+        self.empty_cells.append(cell)

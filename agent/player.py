@@ -38,7 +38,7 @@ class Player:
                 cmd = cmd.split(",")
                 cell = (int(cmd[1]), int(cmd[2]))
 
-        check = False
+        check = True
         if check:
 
             # self.board.print_board_dict()
@@ -67,8 +67,8 @@ class Player:
             print(f"Blue  Goal: {goal2}  Step: {cost2}")
 
             # Check action list
-            # action_list = get_actions(self.board)
-            # print(action_list)
+            action_list = get_actions(self.board)
+            print(f"action_list{action_list}")
 
         return place_action(cell)
 
@@ -89,6 +89,7 @@ class Player:
         cell = (action[1], action[2])
         result = self.board.can_capture(cell, player)
         # print(result)
-        if result is not None:
-            self.board.capture_remove(result)
+        for r in unique_captures(result):
+            self.board.capture_remove(r)
         self.board.make_move(cell, player)
+

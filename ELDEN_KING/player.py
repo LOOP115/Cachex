@@ -68,8 +68,6 @@ class Player:
 
             # Check utility
 
-            print(f"")
-
             # Check action list
             action_list = get_actions(self.board)
             print(f"Action list: {action_list}")
@@ -93,6 +91,6 @@ class Player:
         cell = (action[1], action[2])
         result = self.board.can_capture(cell, player)
         # print(result)
-        if result is not None:
-            self.board.capture_remove(result)
+        for r in unique_captures(result):
+            self.board.capture_remove(r)
         self.board.make_move(cell, player)
