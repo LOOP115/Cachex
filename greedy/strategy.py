@@ -1,6 +1,6 @@
 from math import inf, tanh
 from copy import deepcopy
-from ELDEN_KING.utils import *
+from greedy.utils import *
 
 
 MAX_DEPTH = 3
@@ -54,81 +54,20 @@ def utility_value(player, curr_player, action, board):
     return res
 
 
-# Mini Max with alpha-beta pruning
+# Greedy: Select most immediately promising action
 def minimax(player, board):
     # Filter out promising actions at current state
     actions = get_actions(board)
     if len(actions) == 1:
-        return actions[0], inf
+        return actions[0]
     good_actions = []
     for action in actions:
         score = evaluation(player, action, board)
         # print(f"# eval: {action}: {score}")
         if score == inf:
-            return action, inf
+            return action
         good_actions.append((action, score))
-    # print()
     # Sort the promising actions based on their evaluation result
     # Choose the greatest half to perform mini-max search to reduce time complexity
     good_actions.sort(key=lambda x: x[1], reverse=True)
-    good_actions = good_actions[:len(good_actions)//2]
-
-    # Find the action with max utility value after looking several steps ahead
-    value = -inf
-    res = good_actions[0][0]
-    for action in good_actions:
-        move = action[0]
-        temp = min_value(player, move, board, 0, -inf, inf)
-        # print(f"# min value: {move}: {temp}")
-        if temp > value:
-            value = temp
-            res = move
-    return res, value
-
-
-# Return the max value assuming opponent selected actions with min values
-def max_value(player, action, board, depth, alpha, beta):
-    # Max search depth reached, terminate
-    if depth == MAX_DEPTH:
-        return utility_value(player, opponent(player), action, board)
-
-    # Opponent will win after this move, terminate
-    value = utility_value(player, opponent(player), action, board)
-    if value == -inf:
-        return value
-
-    # Clone the board after opponent's move and get available actions for me
-    board_clone = deepcopy(board)
-    board_clone.make_move(action, opponent(player))
-    actions = get_actions(board_clone)
-
-    # Search the max value for me
-    for action in actions:
-        alpha = max(alpha, min_value(player, action, board_clone, depth+1, alpha, beta))
-        if alpha >= beta:
-            return beta
-    return alpha
-
-
-# Return the min value assuming I selected actions with max values
-def min_value(player, action, board, depth, alpha, beta):
-    # Max search depth reached, terminate
-    if depth == MAX_DEPTH:
-        return utility_value(player, player, action, board)
-
-    # I will win after this move, terminate
-    value = utility_value(player, player, action, board)
-    if value == inf:
-        return value
-
-    # Clone the board after my move and get available actions for opponent
-    board_clone = deepcopy(board)
-    board_clone.make_move(action, player)
-    actions = get_actions(board_clone)
-
-    # Search the min value for opponent
-    for action in actions:
-        beta = min(beta, max_value(player, action, board_clone, depth+1, alpha, beta))
-        if beta <= alpha:
-            return alpha
-    return beta
+    return good_actions[0][0]

@@ -53,23 +53,23 @@
 > 生成所有可能的 actions
 * 第一回合利用 symmetry ❓
 * 第一回合不要下特别好的棋防止被偷 ❓
-* 第二回合考虑 STEAL
+* 第二回合考虑 STEAL ❓
 
 > 实现 MiniMax ✔
 * α-β Pruning ✔
 * 评估当前局面下是否值得这步棋 ✔
-  * 如果我方下这步棋，我方会有多少收益
-  * 如果对方下这步棋，我方会有多少收益
-  * 如果我方下这步棋我方会赢，我方直接下这步棋
-  * 如果对方下这步棋我方会输，我方下这步棋拦截
-* 递归前先评估所有可以下的位置，排序后对评分前 50% 的位置进行 MiniMax
-* 每轮博弈进行预先筛选 ❓
+  * 如果我方下这步棋，我方会有多少收益 ✔
+  * 如果对方下这步棋，我方会有多少收益 ✔
+  * 如果我方下这步棋我方会赢，我方直接下这步棋 ✔
+  * 如果对方下这步棋我方会输，我方下这步棋拦截 ✔
+* 递归前先评估所有可以下的位置，排序后对评分前 50% 的位置进行 MiniMax ✔
+* 每轮博弈都进行预先筛选 ❓
 
 > 构造 Opponent
 * Random ✔ ✌
-* Greedy: Select most immediately promising action
+* Greedy: Select most immediately promising action ✔ ✌
 * Simple evaluation function
-* Same strategy
+* Same strategy ✔
 * Human ✔
 
 > 记录对战棋局, 生成训练数据
