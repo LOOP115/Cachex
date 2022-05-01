@@ -57,22 +57,28 @@ class Player:
             # Check start and goal
             start1, goal1 = start_goal(my, sides[0], sides[1], self.board)
             start2, goal2 = start_goal(op, sides[1], sides[0], self.board)
-            print(f"# {my}  start: {start1}  goal: {goal1}")
-            print(f"# {op}  start: {start2}  goal: {goal2}")
+            print(f"# {my} find  start: {start1}  goal: {goal1}")
+            print(f"# {op} find  start: {start2}  goal: {goal2}")
 
             # Check A*
             goals1, exp1 = min_win_cost(my, sides[0], sides[1], self.board)
             goals2, exp2 = min_win_cost(op, sides[1], sides[0], self.board)
             goal1, cost1 = best_goal(goals1, exp1)
             goal2, cost2 = best_goal(goals2, exp2)
-            print(f"# {my}  goal: {goal1}  cost: {cost1}")
-            print(f"# {op}  goal: {goal2}  cost: {cost2}")
+            print(f"# {my} A*  goal: {goal1}  cost: {cost1}")
+            print(f"# {op} A*  goal: {goal2}  cost: {cost2}")
+            print_path(my, start1, goal1, exp1)
+            # print(exp1)
+            print_path(op, start2, goal2, exp2)
+            # print(exp2)
+            print()
 
+            # if self.board.turn == 9:
+            #     goals1, exp1 = min_win_cost(my, sides[0], sides[1], self.board)
             # Check utility
-
             # Check action list
-            action_list = get_actions(self.board)
-            print(f"# actions: {action_list}\n")
+            # action_list = get_actions(self.board)
+            # print(f"# actions: {action_list}\n")
 
         return place_action(cell)
 

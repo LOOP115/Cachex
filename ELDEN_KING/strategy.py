@@ -2,7 +2,7 @@ from math import inf
 from copy import deepcopy
 from ELDEN_KING.utils import *
 
-MAX_DEPTH = 4
+MAX_DEPTH = 3
 
 # Evaluation function
 def utility_value(player, action, board):
