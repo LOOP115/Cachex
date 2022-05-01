@@ -1,13 +1,23 @@
+
+# Global variables
+place = "PLACE"
+steal = "STEAL"
+red = "red"
+blue = "blue"
+my_flag = "m"
+op_flag = "o"
+
+
 # Format the action to valid command line inputs
 def place_action(cell):
-    return tuple(["PLACE", cell[0], cell[1]])
+    return tuple([place, cell[0], cell[1]])
 
 
 # Return the color of opponent
 def opponent(player):
-    oppo = "red"
-    if player == "red":
-        oppo = "blue"
+    oppo = red
+    if player == red:
+        oppo = blue
     return oppo
 
 
@@ -47,7 +57,6 @@ def split_board(player, move, board):
     captures = board.can_capture(move, player)
     for c in unique_captures(captures):
         op_cells.remove(c)
-
     return my_cells, op_cells
 
 
@@ -56,11 +65,12 @@ def max_path_length(my_cells, board):
     max_length = 0
     res = []
     clone = my_cells.copy()
-    # Breath first search
     while len(clone) > 0:
+        # Select a head to start
         queue = [clone.pop(0)]
         length = 0
         temp_list = []
+        # Breath first search
         while len(queue) > 0:
             temp = queue.pop(0)
             length += 1
@@ -74,7 +84,6 @@ def max_path_length(my_cells, board):
         if length > max_length:
             res = temp_list
             max_length = length
-
     return res
 
 
@@ -169,7 +178,7 @@ def find_q_border(cell, board, op_cells, left):
 # Return the number of cells which is in the same line of the given cell
 def num_one_line(player, cell, my_cells):
     i = 0
-    if player == "red":
+    if player == red:
         i = 1
     cnt = 0
     k = cell[i]
@@ -182,16 +191,15 @@ def num_one_line(player, cell, my_cells):
 # Find optimal cells for start and goal to win
 def start_goal(player, my_cells, op_cells, board):
     # Find cells which is nearest to the (red/blue) border
-    if player == "red":
+    if player == red:
         my_cells.sort()
     else:
         my_cells.sort(key=lambda l: l[1])
 
-    # If the player hasn't occupied any cells, head and tail will be assumed as the center
     x = board.size - 1
     heads = []
     tails = []
-
+    # If the player hasn't occupied any cells, head and tail will be assumed as the center
     if len(my_cells) == 0:
         c = (x + 1) >> 1
         heads.append((c, c))
@@ -213,7 +221,7 @@ def start_goal(player, my_cells, op_cells, board):
     max_line = 0
     for head in heads:
         # Red player, check bottom border
-        if player == "red":
+        if player == red:
             curr_line = num_one_line(player, head, my_cells)
             if curr_line < max_line:
                 continue
@@ -255,7 +263,7 @@ def start_goal(player, my_cells, op_cells, board):
     max_line = 0
     for tail in tails:
         # Red player, check top border
-        if player == "red":
+        if player == red:
             curr_line = num_one_line(player, tail, my_cells)
             if curr_line < max_line:
                 continue
@@ -295,7 +303,7 @@ def start_goal(player, my_cells, op_cells, board):
 
 # Check if the cell can be the start state
 def is_start(player, cell):
-    if player == "red":
+    if player == red:
         return cell[0] == 0
     return cell[1] == 0
 
@@ -303,7 +311,7 @@ def is_start(player, cell):
 # Check if the cell can be the goal state
 def is_goal(player, cell, board):
     x = board.size - 1
-    if player == "red":
+    if player == red:
         return cell[0] == x
     return cell[1] == x
 
@@ -315,20 +323,18 @@ def min_win_cost(player, my_cells, op_cells, board):
 
     # Specify player color
     i = 1
-    if player == "red":
+    if player == red:
         i = 0
 
     # Use A* search to find the minimum cost from start to goal
     # Similar to Part A
     queue = [(start, 0)]
-
     # Keep records of explored cells
     # Format: {current cell: (last cell, f(x))}
     explored = {start: (None, 1)}
     if start in my_cells:
         explored = {start: (None, 0)}
 
-    starts = []
     goals = []
     while len(queue) > 0:
         # Pop and expand the cell with lowest f(x)
@@ -342,13 +348,14 @@ def min_win_cost(player, my_cells, op_cells, board):
             # Update the cost to new cell, the cost is 0 if the cell is occupied by us
             new_cost = explored[curr_cell][1] + 1
             if next_cell in my_cells:
+                # Find a piece on border, make it a new start state with cost = 0
                 if next_cell != start and is_start(player, next_cell):
                     new_cost = 0
                     start_flag = True
-                    starts.append(next_cell)
                 else:
                     new_cost -= 1
             else:
+                # Find a cell on border, make it a new start state with cost = 1
                 if is_start(player, next_cell):
                     start_flag = True
                     new_cost = 1
@@ -359,7 +366,7 @@ def min_win_cost(player, my_cells, op_cells, board):
                 goals.append(next_cell)
                 return goals, explored
 
-            # Calculate f(x) of new cell and push it to the priority queue
+            # Check if the cell is worth to be expanded
             if next_cell not in explored.keys() or new_cost < explored[next_cell][1]:
                 # If the cell can be a start state, record its predecessor as None
                 if start_flag:
@@ -371,7 +378,10 @@ def min_win_cost(player, my_cells, op_cells, board):
                 if is_goal(player, next_cell, board):
                     goals.append(next_cell)
 
+                # Calculate f(x) of new cell and offer it to the queue
                 queue.append((next_cell, new_cost + manhattan(next_cell, goal) - len(my_cells) + next_cell[i]))
+
+        # Sort the queue based on f(x) after the cell is fully expanded
         queue.sort(key=lambda x: (x[1], x[0][i]))
 
     return goals, explored
@@ -380,6 +390,7 @@ def min_win_cost(player, my_cells, op_cells, board):
 # Find the goal state with the least cost
 def best_goal(goals, explored):
     min_cost = 100
+    # No available path
     if len(goals) == 0:
         return None, None
     res = goals[0]
@@ -391,15 +402,15 @@ def best_goal(goals, explored):
     return res, min_cost
 
 
-# Format and print the result
+# Print the path
 def print_path(player, start, goal, explored):
     # No path found
     if start is None or goal is None:
         print("# No path found!")
         return
 
-    result = []
     # Backtrack the path
+    result = []
     while True:
         result.append(goal)
         goal = explored[goal][0]
@@ -430,7 +441,7 @@ def get_actions(board):
         #     actions.remove(cell)
         actions.append((0, board.size - 1))
         return actions
-    # In second turn, we can consider the half where our opponent placed and decide if to steal
+    # In second turn, decide if to steal
 
     # Normally, just extract the empty cells from board
     return board.empty_cells
@@ -440,8 +451,7 @@ def get_actions(board):
 def is_win(player, size, max_path):
     if len(max_path) < size:
         return False
-
-    if player == "red":
+    if player == red:
         max_path.sort()
         return max_path[0][0] == 0 and max_path[-1][0] == size - 1
     else:

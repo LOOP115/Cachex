@@ -27,9 +27,7 @@ class Player:
         decision = minimax(self.player, self.board)
         cell = decision[0]
 
-        # test = [(4, 0), (4, 1), (4, 2), (3, 3), (3, 4)]
-        # print(is_win("blue", 5, test))
-
+        # Debug specific turn
         # cell = (0, 0)
         # if self.board.turn == 8:
         #     decision = minimax(self.player, self.board)
@@ -43,14 +41,14 @@ class Player:
             cmd = input()
             cmd = cmd.split(",")
             cell = (int(cmd[0]), int(cmd[1]))
-            # The first move cannot be the center of the board
+            # First move cannot be the center of the board
             if (self.board.turn == 1) and (not self.board.legal_first_move(cell)):
                 cmd = input()
                 cmd = cmd.split(",")
                 cell = (int(cmd[0]), int(cmd[1]))
 
-        check = True
-        if check:
+        debug = False
+        if debug:
             my = self.player
             op = opponent(my)
             print(f"\n# Side: {my}")
@@ -84,13 +82,6 @@ class Player:
             # print(exp2)
             print()
 
-            # if self.board.turn == 9:
-            #     goals1, exp1 = min_win_cost(my, sides[0], sides[1], self.board)
-            # Check utility
-            # Check action list
-            # action_list = get_actions(self.board)
-            # print(f"# actions: {action_list}\n")
-
         return place_action(cell)
 
     def turn(self, player, action):
@@ -105,7 +96,4 @@ class Player:
         above. However, the referee has validated it at this point.
         """
         cell = (action[1], action[2])
-        result = self.board.can_capture(cell, player)
-        for r in unique_captures(result):
-            self.board.capture_remove(r)
         self.board.make_move(cell, player)

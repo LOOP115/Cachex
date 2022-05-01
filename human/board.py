@@ -11,17 +11,20 @@ class Board:
     cx = [1, -1, 1, -1, 2, -2]
     cy = [1, -1, -2, 2, -1, 1]
 
+    # Initialise the board
     def __init__(self, size, player):
         self.size = size
         self.turn = 1
         self.board_dict = {}
         self.player_dict = {}
-        if player == "red":
-            self.player_dict["red"] = "m"
-            self.player_dict["blue"] = "o"
+        # Specify side color
+        if player == red:
+            self.player_dict[red] = my_flag
+            self.player_dict[blue] = op_flag
         else:
-            self.player_dict["red"] = "o"
-            self.player_dict["blue"] = "m"
+            self.player_dict[red] = op_flag
+            self.player_dict[blue] = my_flag
+        # Record empty cells to get available actions faster
         self.empty_cells = []
         for i in range(size):
             for j in range(size):
@@ -31,11 +34,15 @@ class Board:
     def in_bounds(self, cell):
         return 0 <= cell[0] < self.size and 0 <= cell[1] < self.size
 
-    # Record each player's move after each turn
+    # Record each player's move after each turn and update the board
     def make_move(self, cell, player):
         self.board_dict[cell] = self.player_dict[player]
         self.turn += 1
         self.empty_cells.remove(cell)
+        # Check captures
+        cap = self.can_capture(cell, player)
+        for c in unique_captures(cap):
+            self.capture_remove(c)
 
     # Print board dict
     def print_board_dict(self):
@@ -53,7 +60,6 @@ class Board:
         x = cell[0]
         y = cell[1]
         neighbour_list = []
-        # Check if neighbour cells are in bounds
         for i in range(6):
             cell = (x + self.dx[i], y + self.dy[i])
             if self.in_bounds(cell):
@@ -65,22 +71,26 @@ class Board:
         x = cell[0]
         y = cell[1]
         res = []
-        # Check if neighbour cells are in bounds
         for i in range(6):
             cell = (x + self.cx[i], y + self.cy[i])
             if self.in_bounds(cell):
                 res.append(cell)
         return res
 
+    # Remove pieces that have been captured
+    def capture_remove(self, cell):
+        self.board_dict.pop(cell)
+        self.empty_cells.append(cell)
+
     # Check if the move can perform a capture
     # Return the cell for the capture to be performed, otherwise return null
     def can_capture(self, cell, player):
         # Specify the player
-        my = "m"
-        op = "o"
-        if self.player_dict[player] == "o":
-            my = "o"
-            op = "m"
+        my = my_flag
+        op = op_flag
+        if self.player_dict[player] == op_flag:
+            my = op_flag
+            op = my_flag
 
         # Search the neighbours and record the input player's opponent cells
         neighbour_cells = self.neighbours(cell)
@@ -89,9 +99,8 @@ class Board:
             if c in self.board_dict.keys() and self.board_dict[c][0] == op:
                 op_cells.append(c)
 
-        capture_list = []
-
         # Impossible to capture if number of neighbours is less than 2
+        capture_list = []
         if len(op_cells) < 2:
             return capture_list
 
@@ -101,8 +110,8 @@ class Board:
             if c in self.board_dict.keys() and self.board_dict[c][0] == my:
                 my_cells1.append(c)
 
-        my_cells2 = []
         # Type 2: 2 unit distance in diagonal directions
+        my_cells2 = []
         diagonal_cells = self.neighbours_diagonal(cell)
         for c in diagonal_cells:
             if c in self.board_dict.keys() and self.board_dict[c][0] == my:
@@ -130,8 +139,3 @@ class Board:
                     break
 
         return capture_list
-
-    # Remove pieces that have been captured
-    def capture_remove(self, cell):
-        self.board_dict.pop(cell)
-        self.empty_cells.append(cell)

@@ -19,7 +19,4 @@ class Player:
 
     def turn(self, player, action):
         cell = (action[1], action[2])
-        result = self.board.can_capture(cell, player)
-        for r in unique_captures(result):
-            self.board.capture_remove(r)
         self.board.make_move(cell, player)

@@ -1,3 +1,13 @@
+
+# Global variables
+place = "PLACE"
+steal = "STEAL"
+red = "red"
+blue = "blue"
+my_flag = "m"
+op_flag = "o"
+
+
 # Format the action
 def place_action(cell):
     return tuple(["PLACE", cell[0], cell[1]])

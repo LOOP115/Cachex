@@ -39,15 +39,16 @@
     * 343 turns
 
 > Evaluation Function 要素
-* 我方和敌方的棋子数 ❓
+* 我方和敌方的棋子数 ✔
 * 我方和敌方当前连续棋子的最大长度 ✔
 * 我方和敌方当前距离胜利还需要几步 ✔
   * 寻找最优起始点 ✔
     * 优先选择存在更多棋子的同行（蓝）或同列（红）✔
     * 若没有棋子在边界，选择距离所有棋子最近的边界点 ✔
   * A* Search ✔
-    * Heuristic function: Manhattan distance - 现存棋子数 + x(红)/y(蓝)坐标值 ✔
     * 搜索过程中可能已经到达边界，记录最短步数 ✔
+    * 搜索过程中可能发现新的起点，可能缩短步数 ✔
+    * Heuristic function: Manhattan distance - 现存棋子数 + x(红)/y(蓝)坐标值 ✔
 
 > 生成所有可能的 actions
 * 第一回合利用 symmetry ❓
@@ -55,25 +56,25 @@
 * 第二回合考虑 STEAL
 
 > 实现 MiniMax ✔
-* 选择是否该对此步棋深入搜索
+* α-β Pruning ✔
+* 评估当前局面下是否值得这步棋 ✔
   * 如果我方下这步棋，我方会有多少收益
   * 如果对方下这步棋，我方会有多少收益
   * 如果我方下这步棋我方会赢，我方直接下这步棋
-  * 如果对方下这步棋我方会输，我方需要下这步棋以拦截
-  * 如果我方下这步棋我方收益较高，可以选择下
-  * 如果对方下这步棋我方收益较高，可以选择不下
-
-> 实现 α-β Pruning ✔
+  * 如果对方下这步棋我方会输，我方下这步棋拦截
+* 递归前先评估所有可以下的位置，排序后对评分前 50% 的位置进行 MiniMax
+* 每轮博弈进行预先筛选 ❓
 
 > 构造 Opponent
+* Random ✔ ✌
+* Greedy: Select most immediately promising action
+* Simple evaluation function
+* Same strategy
 * Human ✔
-* Random ✔
-* Basic Utility Function
-* Same Strategy as Player
 
 > 记录对战棋局, 生成训练数据
 
-> 机器学习，优化模型
+> Machine Learning
 
 > 完成 Report
 
