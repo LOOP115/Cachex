@@ -54,21 +54,28 @@ def split_board(player, move, board):
 # Compute max length of consecutive pieces
 def max_path_length(my_cells, board):
     max_length = 0
+    res = []
     clone = my_cells.copy()
     # Breath first search
     while len(clone) > 0:
         queue = [clone.pop(0)]
         length = 0
+        temp_list = []
         while len(queue) > 0:
             temp = queue.pop(0)
             length += 1
+            temp_list.append(temp)
             neighbour_list = board.neighbours(temp)
             for n in neighbour_list:
                 if n in clone:
                     clone.remove(n)
                     queue.append(n)
-        max_length = max(max_length, length)
-    return max_length
+
+        if length > max_length:
+            res = temp_list
+            max_length = length
+
+    return res
 
 
 # Initialise cells left and right to the queue
@@ -413,14 +420,15 @@ def get_actions(board):
     actions = []
     # In first turn, we can consider only half of the board due to symmetry
     if t == 1:
-        for i in range(n):
-            for j in range(n - i):
-                actions.append((i, j))
-        # Check center
-        c = n >> 1
-        cell = (c, c)
-        if not board.legal_first_move(cell):
-            actions.remove(cell)
+        # for i in range(n):
+        #     for j in range(n - i):
+        #         actions.append((i, j))
+        # # Check center
+        # c = n >> 1
+        # cell = (c, c)
+        # if not board.legal_first_move(cell):
+        #     actions.remove(cell)
+        actions.append((0, board.size - 1))
         return actions
     # In second turn, we can consider the half where our opponent placed and decide if to steal
 
@@ -429,13 +437,13 @@ def get_actions(board):
 
 
 # Check if the player can win
-def is_win(player, size, max_path, cells):
-    if max_path < size:
+def is_win(player, size, max_path):
+    if len(max_path) < size:
         return False
 
     if player == "red":
-        cells.sort()
-        return cells[0][0] == 0 and cells[-1][0] == size - 1
+        max_path.sort()
+        return max_path[0][0] == 0 and max_path[-1][0] == size - 1
     else:
-        cells.sort(key=lambda l: l[1])
-        return cells[0][1] == 0 and cells[-1][1] == size - 1
+        max_path.sort(key=lambda l: l[1])
+        return max_path[0][1] == 0 and max_path[-1][1] == size - 1

@@ -23,9 +23,20 @@ class Player:
         Called at the beginning of your turn. Based on the current state
         of the game, select an action to play.
         """
-        # Decision
+        # Decide next move
         decision = minimax(self.player, self.board)
         cell = decision[0]
+
+        # test = [(4, 0), (4, 1), (4, 2), (3, 3), (3, 4)]
+        # print(is_win("blue", 5, test))
+
+        # cell = (0, 0)
+        # if self.board.turn == 8:
+        #     decision = minimax(self.player, self.board)
+        #     cell = decision[0]
+        # else:
+        #     decision = minimax(self.player, self.board)
+        #     cell = decision[0]
 
         manual = False
         if manual:
@@ -49,8 +60,8 @@ class Player:
             print(f"# {op} cells: {sides[1]}")
 
             # Check max path
-            max_len0 = max_path_length(sides[0], self.board)
-            max_len1 = max_path_length(sides[1], self.board)
+            max_len0 = len(max_path_length(sides[0], self.board))
+            max_len1 = len(max_path_length(sides[1], self.board))
             print(f"# {my} max path: {max_len0}")
             print(f"# {op} max path: {max_len1}")
 
