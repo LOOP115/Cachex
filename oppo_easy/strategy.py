@@ -1,6 +1,6 @@
 from math import inf, tanh
 from copy import deepcopy
-from ELDEN_KING.utils import *
+from oppo_easy.utils import *
 
 
 MAX_DEPTH = 3
@@ -50,7 +50,8 @@ def utility_value(player, curr_player, action, board):
         op_win_cost = 2 * n
 
     # Compute utility value based on the following features
-    res = 1 * len(my_max_path) - 5 * len(op_max_path) - 1 * my_win_cost + 3 * op_win_cost + 1 * len(my_cells) - 3 * len(op_cells)
+    # res = len(my_max_path) - 2 * len(op_max_path) - my_win_cost + 2 * op_win_cost + len(my_cells) - 2 * len(op_cells)
+    res = -my_win_cost + op_win_cost
     return res
 
 

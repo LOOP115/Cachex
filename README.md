@@ -68,9 +68,9 @@
 > 构造 Opponent
 * Random ✔ ✌
 * Greedy: Select most immediately promising action ✔ ✌
-* Simple evaluation function
+* Simple evaluation function ✔
 * Same strategy ✔
-* Human ✔
+* Human ✔ ✌
 
 > 记录对战棋局, 生成训练数据
 
