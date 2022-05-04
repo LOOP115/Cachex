@@ -44,6 +44,16 @@ class Board:
         for c in unique_captures(cap):
             self.capture_remove(c)
 
+    # Update the board after a steal
+    def steal_move(self, player):
+        cell = list(self.board_dict.keys())[0]
+        self.empty_cells.append(cell)
+        self.board_dict.pop(cell)
+        steal_cell = (cell[1], cell[0])
+        self.empty_cells.remove(steal_cell)
+        self.board_dict[steal_cell] = self.player_dict[player]
+        self.turn += 1
+
     # Print board dict
     def print_board_dict(self):
         for k, v in self.board_dict.items():

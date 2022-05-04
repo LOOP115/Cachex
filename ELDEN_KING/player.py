@@ -27,6 +27,11 @@ class Player:
         decision = minimax(self.player, self.board)
         cell = decision[0]
 
+        if len(decision) == 1:
+            if cell == steal:
+                return cell
+            return place_action(cell)
+
         # Debug specific turn
         # cell = (0, 0)
         # if self.board.turn == 4:
@@ -95,5 +100,8 @@ class Player:
         the same as what your player returned from the action method
         above. However, the referee has validated it at this point.
         """
-        cell = (action[1], action[2])
-        self.board.make_move(cell, player)
+        if action[0] == steal:
+            self.board.steal_move(player)
+        else:
+            cell = (action[1], action[2])
+            self.board.make_move(cell, player)

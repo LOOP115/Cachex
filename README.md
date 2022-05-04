@@ -28,10 +28,16 @@
 
 * [Specification](spec/spec_b.pdf)
 
+> Setup on Unix Machine
+* <code> Host Name: dimefox.eng.unimelb.edu.au </code>
+* <code> enable-python3 </code>
+* <code> pcsp (files) (username)@username>@dimefox.eng.unimelb.edu.au:(remote directory path) </code>
+* <code> python -m referee (board size) (red player) (blue player) -c </code>
+
 ### Progress Check List
 
 > 校验 Rules
-* Swap Rule (STEAL)  后期实现，胜率 > 50% 的初始位置可以进行替换 ❓
+* Swap Rule (STEAL) ✔
 * Starting with a hex in the center is illegal ✔
 * Capture ✔
 * Draw （交由 Referee 裁决）✔
@@ -50,10 +56,10 @@
     * 搜索过程中可能发现新的起点，可能缩短步数 ✔
     * Heuristic function: Manhattan distance - 现存棋子数 + x(红)/y(蓝)坐标值 ✔
 
-> 生成所有可能的 actions
+> 生成所有可能的 Actions
 * 第一回合利用 symmetry ❓
 * 第一回合不要下特别好的棋防止被偷 ❓
-* 第二回合考虑 STEAL ❓
+* 第二回合考虑 STEAL，如果我方偷棋后 Utility 更高则选择 STEAL ✔
 
 > 实现 MiniMax ✔
 * α-β Pruning ✔
@@ -72,9 +78,30 @@
 * Same strategy ✔
 * Human ✔ ✌
 
+> Dimefox 测试
+
 > 记录对战棋局, 生成训练数据
 
 > Machine Learning
 
 > 完成 Report
+* Describe your approach: How does your game-playing program select actions throughout the game?
+  * What search algorithm have you chosen, and why?
+  * Have you made any modifications to an existing algorithm?
+  * What are the features of your evaluation function, and what are their strategic motivations?
+  * If you have applied machine learning, how does this fit into your overall approach?
+  * What learning methodology have you followed, and why?
+  * Note that it is not essential to use machine learning to design a strong player.
+* Performance evaluation: How effective is your game-playing program?
+  * How have you judged your program’s performance?
+  * Have you compared multiple programs based on different approaches, 
+    and, if so, how have you selected which is the most effective?
+* Other aspects: Are there any other important creative or technical aspects of your work?
+  * algorithmic optimisations
+  * specialised data structures
+  * any other significant efficiency optimisations
+  * alternative or enhanced algorithms beyond those discussed in class
+  * any other significant ideas you have incorporated from your independent research
+* Supporting work: Have you completed any other work to assist you 
+                   in the process of developing your game-playing program?
 

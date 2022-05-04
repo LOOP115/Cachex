@@ -64,5 +64,8 @@ class Player:
         return place_action(cell)
 
     def turn(self, player, action):
-        cell = (action[1], action[2])
-        self.board.make_move(cell, player)
+        if action[0] == steal:
+            self.board.steal_move(player)
+        else:
+            cell = (action[1], action[2])
+            self.board.make_move(cell, player)

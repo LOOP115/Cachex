@@ -50,16 +50,29 @@ def utility_value(player, curr_player, action, board):
         op_win_cost = 2 * n
 
     # Compute utility value based on the following features
-    res = 1 * len(my_max_path) - 5 * len(op_max_path) - 1 * my_win_cost + 3 * op_win_cost + 1 * len(my_cells) - 3 * len(op_cells)
+    res = 3 * len(my_max_path) - 5 * len(op_max_path) - 3 * my_win_cost + 5 * op_win_cost + 1 * len(my_cells) - 1 * len(op_cells)
     return res
 
 
 # Mini Max with alpha-beta pruning
 def minimax(player, board):
-    # Filter out promising actions at current state
+    # First move
+    if board.turn == 1:
+        action = (1, 4)
+        return [action]
+
+    # # Consider if steal in second turn
+    # if board.turn == 2:
+    #     first_move = list(board.board_dict.keys())[0]
+    #     if first_move[0] == 0 or first_move[0] == board.size:
+    #         return [steal]
+
+    # Get all available actions currently
     actions = get_actions(board)
     if len(actions) == 1:
         return actions[0], inf
+
+    # Filter out promising actions at current state
     good_actions = []
     for action in actions:
         score = evaluation(player, action, board)
@@ -83,13 +96,26 @@ def minimax(player, board):
         if temp > value:
             value = temp
             res = move
+
+    # Consider if steal in second turn
+    if board.turn == 2:
+        first_move = list(board.board_dict.keys())[0]
+        print(f"# Decide if to steal {first_move}")
+        board_clone = deepcopy(board)
+        steal_move = board_clone.fake_steal(player)
+        first_move_utility = min_value(player, steal_move, board_clone, 0, -inf, inf)
+        print(f"# Utility of steal: {first_move_utility}")
+        print(f"# Utility of not steal: {value}")
+        if first_move_utility >= value:
+            return [steal]
+
     return res, value
 
 
 # Return the max value assuming opponent selected actions with min values
-def max_value(player, action, board, depth, alpha, beta):
+def max_value(player, action, board, depth, alpha, beta, max_depth=MAX_DEPTH):
     # Max search depth reached, terminate
-    if depth == MAX_DEPTH:
+    if depth == max_depth:
         return utility_value(player, opponent(player), action, board)
 
     # Opponent will win after this move, terminate
@@ -104,16 +130,16 @@ def max_value(player, action, board, depth, alpha, beta):
 
     # Search the max value for me
     for action in actions:
-        alpha = max(alpha, min_value(player, action, board_clone, depth+1, alpha, beta))
+        alpha = max(alpha, min_value(player, action, board_clone, depth+1, alpha, beta, max_depth))
         if alpha >= beta:
             return beta
     return alpha
 
 
 # Return the min value assuming I selected actions with max values
-def min_value(player, action, board, depth, alpha, beta):
+def min_value(player, action, board, depth, alpha, beta, max_depth=MAX_DEPTH):
     # Max search depth reached, terminate
-    if depth == MAX_DEPTH:
+    if depth == max_depth:
         return utility_value(player, player, action, board)
 
     # I will win after this move, terminate
@@ -128,7 +154,7 @@ def min_value(player, action, board, depth, alpha, beta):
 
     # Search the min value for opponent
     for action in actions:
-        beta = min(beta, max_value(player, action, board_clone, depth+1, alpha, beta))
+        beta = min(beta, max_value(player, action, board_clone, depth+1, alpha, beta, max_depth))
         if beta <= alpha:
             return alpha
     return beta
