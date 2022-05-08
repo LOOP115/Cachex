@@ -217,7 +217,7 @@ def start_goal(player, my_cells, op_cells, board):
                 tails.append(c)
 
     start = heads[0]
-    min_dis = x
+    min_dis = 100
     max_line = 0
     for head in heads:
         # Red player, check bottom border
@@ -261,7 +261,7 @@ def start_goal(player, my_cells, op_cells, board):
                     min_dis = temp_dis
 
     goal = tails[0]
-    min_dis = x
+    min_dis = 100
     max_line = 0
     for tail in tails:
         # Red player, check top border
@@ -330,6 +330,10 @@ def min_win_cost(player, my_cells, op_cells, board):
     if player == red:
         i = 0
 
+    # Check if start and goal are valid
+    if not is_start(player, start) or not is_goal(player, goal, board):
+        return None, None
+
     # Use A* search to find the minimum cost from start to goal
     # Similar to Part A
     queue = [(start, 0)]
@@ -393,10 +397,10 @@ def min_win_cost(player, my_cells, op_cells, board):
 
 # Find the goal state with the least cost
 def best_goal(goals, explored):
-    min_cost = 100
     # No available path
-    if len(goals) == 0:
+    if goals is None or len(goals) == 0:
         return None, None
+    min_cost = 100
     res = goals[0]
     for goal in goals:
         cost = explored[goal][1]
@@ -435,16 +439,15 @@ def get_actions(board):
     actions = []
     # In first turn, we can consider only half of the board due to symmetry
     if t == 1:
-        # for i in range(n):
-        #     for j in range(n - i):
-        #         actions.append((i, j))
-        # # Check center
-        # c = n >> 1
-        # cell = (c, c)
-        # if not board.legal_first_move(cell):
-        #     actions.remove(cell)
+        for i in range(n):
+            for j in range(n - i):
+                actions.append((i, j))
+        # Check center
+        c = n >> 1
+        cell = (c, c)
+        if not board.legal_first_move(cell):
+            actions.remove(cell)
         # actions.append((0, n - 1))
-        actions.append((0, n-1))
         return actions
     # In second turn, decide if to steal
 

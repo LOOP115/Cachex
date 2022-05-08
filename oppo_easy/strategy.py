@@ -3,7 +3,7 @@ from copy import deepcopy
 from oppo_easy.utils import *
 
 
-MAX_DEPTH = 3
+MAX_DEPTH = 2
 
 
 # Decide if this is a good move to search deeper
@@ -50,8 +50,8 @@ def utility_value(player, curr_player, action, board):
         op_win_cost = 2 * n
 
     # Compute utility value based on the following features
-    res = 1 * len(my_max_path) - 5 * len(op_max_path) - 1 * my_win_cost + 3 * op_win_cost + 1 * len(my_cells) - 3 * len(op_cells)
-    # res = -my_win_cost + op_win_cost
+    # res = 1 * len(my_max_path) - 5 * len(op_max_path) - 1 * my_win_cost + 3 * op_win_cost + 1 * len(my_cells) - 3 * len(op_cells)
+    res = -my_win_cost + op_win_cost
     return res
 
 

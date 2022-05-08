@@ -217,7 +217,7 @@ def start_goal(player, my_cells, op_cells, board):
                 tails.append(c)
 
     start = heads[0]
-    min_dis = x
+    min_dis = 100
     max_line = 0
     for head in heads:
         # Red player, check bottom border
@@ -226,8 +226,9 @@ def start_goal(player, my_cells, op_cells, board):
             if curr_line < max_line:
                 continue
             max_line = curr_line
-            start = head
-            if head[0] != 0:
+            if head[0] == 0:
+                start = head
+            else:
                 # Nearest start from head
                 temp_start = (0, head[1])
                 # Check if the start is occupied by opponent
@@ -246,8 +247,9 @@ def start_goal(player, my_cells, op_cells, board):
             if curr_line < max_line:
                 continue
             max_line = curr_line
-            start = head
-            if head[1] != 0:
+            if head[1] == 0:
+                start = head
+            else:
                 temp_start = (head[0], 0)
                 if temp_start in op_cells:
                     temp_start = find_q_border(temp_start, board, op_cells, left=True)
@@ -259,7 +261,7 @@ def start_goal(player, my_cells, op_cells, board):
                     min_dis = temp_dis
 
     goal = tails[0]
-    min_dis = x
+    min_dis = 100
     max_line = 0
     for tail in tails:
         # Red player, check top border
@@ -268,8 +270,9 @@ def start_goal(player, my_cells, op_cells, board):
             if curr_line < max_line:
                 continue
             max_line = curr_line
-            goal = tail
-            if tail[0] != x:
+            if tail[0] == x:
+                goal = tail
+            else:
                 temp_goal = (x, tail[1])
                 if temp_goal in op_cells:
                     temp_goal = find_r_border(temp_goal, board, op_cells, bottom=False)
@@ -286,8 +289,9 @@ def start_goal(player, my_cells, op_cells, board):
             if curr_line < max_line:
                 continue
             max_line = curr_line
-            goal = tail
-            if tail[1] != x:
+            if tail[1] == x:
+                goal = tail
+            else:
                 temp_goal = (tail[0], x)
                 if temp_goal in op_cells:
                     temp_goal = find_q_border(temp_goal, board, op_cells, left=False)
@@ -391,7 +395,7 @@ def min_win_cost(player, my_cells, op_cells, board):
 def best_goal(goals, explored):
     min_cost = 100
     # No available path
-    if len(goals) == 0:
+    if goals is None or len(goals) == 0:
         return None, None
     res = goals[0]
     for goal in goals:
@@ -439,7 +443,8 @@ def get_actions(board):
         # cell = (c, c)
         # if not board.legal_first_move(cell):
         #     actions.remove(cell)
-        actions.append((0, board.size - 1))
+        # actions.append((0, n - 1))
+        actions.append((4, 4))
         return actions
     # In second turn, decide if to steal
 

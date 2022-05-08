@@ -3,7 +3,7 @@ from copy import deepcopy
 from ELDEN_KING.utils import *
 
 
-MAX_DEPTH = 3
+MAX_DEPTH = 2
 
 
 # Decide if this is a good move to search deeper
@@ -39,9 +39,13 @@ def utility_value(player, curr_player, action, board):
 
     # Search the optimal wining path for both sides
     my_win, my_path = min_win_cost(player, my_cells, op_cells, board)
-    my_win_cost = best_goal(my_win, my_path)[1]
+    my_win_cost = None
+    if my_win is not None:
+        my_win_cost = best_goal(my_win, my_path)[1]
     op_win, op_path = min_win_cost(opponent(player), op_cells, my_cells, board)
-    op_win_cost = best_goal(op_win, op_path)[1]
+    op_win_cost = None
+    if op_win is not None:
+        op_win_cost = best_goal(op_win, op_path)[1]
 
     # If the cost to win is none, set it to 2n as a huge contribution utility value
     if my_win_cost is None:
@@ -50,7 +54,7 @@ def utility_value(player, curr_player, action, board):
         op_win_cost = 2 * n
 
     # Compute utility value based on the following features
-    res = 3 * len(my_max_path) - 5 * len(op_max_path) - 3 * my_win_cost + 5 * op_win_cost + 1 * len(my_cells) - 1 * len(op_cells)
+    res = 3 * len(my_max_path) - 5 * len(op_max_path) - 2 * my_win_cost + 4 * op_win_cost + 1 * len(my_cells) - 1 * len(op_cells)
     return res
 
 
@@ -58,14 +62,8 @@ def utility_value(player, curr_player, action, board):
 def minimax(player, board):
     # First move
     if board.turn == 1:
-        action = (1, 4)
+        action = (0, board.size >> 1)
         return [action]
-
-    # # Consider if steal in second turn
-    # if board.turn == 2:
-    #     first_move = list(board.board_dict.keys())[0]
-    #     if first_move[0] == 0 or first_move[0] == board.size:
-    #         return [steal]
 
     # Get all available actions currently
     actions = get_actions(board)
@@ -99,13 +97,13 @@ def minimax(player, board):
 
     # Consider if steal in second turn
     if board.turn == 2:
-        first_move = list(board.board_dict.keys())[0]
-        print(f"# Decide if to steal {first_move}")
+        # first_move = list(board.board_dict.keys())[0]
+        # print(f"# Decide if to steal {first_move}")
         board_clone = deepcopy(board)
-        steal_move = board_clone.fake_steal(player)
+        steal_move = board_clone.fake_steal()
         first_move_utility = min_value(player, steal_move, board_clone, 0, -inf, inf)
-        print(f"# Utility of steal: {first_move_utility}")
-        print(f"# Utility of not steal: {value}")
+        # print(f"# Utility of steal: {first_move_utility}")
+        # print(f"# Utility of not steal: {value}")
         if first_move_utility >= value:
             return [steal]
 

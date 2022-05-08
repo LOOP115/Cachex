@@ -217,7 +217,7 @@ def start_goal(player, my_cells, op_cells, board):
                 tails.append(c)
 
     start = heads[0]
-    min_dis = x
+    min_dis = 100
     max_line = 0
     for head in heads:
         # Red player, check bottom border
@@ -261,7 +261,7 @@ def start_goal(player, my_cells, op_cells, board):
                     min_dis = temp_dis
 
     goal = tails[0]
-    min_dis = x
+    min_dis = 100
     max_line = 0
     for tail in tails:
         # Red player, check top border
@@ -395,7 +395,7 @@ def min_win_cost(player, my_cells, op_cells, board):
 def best_goal(goals, explored):
     min_cost = 100
     # No available path
-    if len(goals) == 0:
+    if goals is None or len(goals) == 0:
         return None, None
     res = goals[0]
     for goal in goals:

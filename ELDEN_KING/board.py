@@ -55,7 +55,7 @@ class Board:
         self.turn += 1
 
     # Simulate a steal
-    def fake_steal(self, player):
+    def fake_steal(self):
         cell = list(self.board_dict.keys())[0]
         self.empty_cells.append(cell)
         self.board_dict.pop(cell)
