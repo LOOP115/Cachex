@@ -42,6 +42,18 @@ def unique_captures(captures):
     return list(set(res))
 
 
+# Split pieces into two lists, one for player and the other for opponent
+def split_curr_board(player, board):
+    my_cells = []
+    op_cells = []
+    for k, v in board.board_dict.items():
+        if v == board.player_dict[player]:
+            my_cells.append(k)
+        else:
+            op_cells.append(k)
+    return my_cells, op_cells
+
+
 # Split pieces into two lists after the player's move, one for player and the other for opponent
 def split_board(player, move, board):
     my_cells = []
@@ -465,3 +477,16 @@ def is_win(player, size, max_path):
     else:
         max_path.sort(key=lambda l: l[1])
         return max_path[0][1] == 0 and max_path[-1][1] == size - 1
+
+
+# Set max depth dynamically
+def set_depth(board):
+    size = board.size
+    depth = 2
+    if size < 7:
+        return 3
+    elif size < 11:
+        return 2
+    elif size < 16:
+        return 0
+    return depth

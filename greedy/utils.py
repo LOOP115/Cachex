@@ -444,7 +444,7 @@ def get_actions(board):
         # if not board.legal_first_move(cell):
         #     actions.remove(cell)
         # actions.append((0, n - 1))
-        actions.append((4, 4))
+        actions.append((0, n - 1))
         return actions
     # In second turn, decide if to steal
 

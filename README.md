@@ -57,11 +57,11 @@
     * Heuristic function: Manhattan distance - 现存棋子数 + x(红)/y(蓝)坐标值 ✔
 
 > 生成所有可能的 Actions
-* 第一回合利用 symmetry ❓
-* 第一回合不要下特别好的棋防止被偷 ❓
+* 第一回合利用 symmetry
+* 第一回合不要下特别好的棋防止被偷 ✔
 * 第二回合考虑 STEAL，如果我方偷棋后 Utility 更高则选择 STEAL ✔
 
-> 实现 MiniMax ✔
+> 实现 MiniMax
 * α-β Pruning ✔
 * 评估当前局面下是否值得这步棋 ✔
   * 如果我方下这步棋，我方会有多少收益 ✔
@@ -69,7 +69,7 @@
   * 如果我方下这步棋我方会赢，我方直接下这步棋 ✔
   * 如果对方下这步棋我方会输，我方下这步棋拦截 ✔
 * 递归前先评估所有可以下的位置，排序后对评分前 50% 的位置进行 MiniMax ✔
-* 每轮博弈都进行预先筛选 ❓
+* 每轮博弈都进行预先筛选 ❌
 
 > 构造 Opponent
 * Random ✔ ✌
@@ -79,10 +79,8 @@
 * Human ✔ ✌
 
 > Dimefox 测试
-
-> 记录对战棋局, 生成训练数据
-
-> Machine Learning
+* 设置 Timer ✔
+* Memory ✔
 
 > 完成 Report
 * Describe your approach: How does your game-playing program select actions throughout the game? ✔
@@ -92,16 +90,16 @@
   * If you have applied machine learning, how does this fit into your overall approach? ❌
   * What learning methodology have you followed, and why? ❌
   * Note that it is not essential to use machine learning to design a strong player. ✔
-* Performance evaluation: How effective is your game-playing program?
-  * How have you judged your program’s performance?
+* Performance evaluation: How effective is your game-playing program? ✔
+  * How have you judged your program’s performance? ✔
   * Have you compared multiple programs based on different approaches, 
-    and, if so, how have you selected which is the most effective?
-* Other aspects: Are there any other important creative or technical aspects of your work?
-  * algorithmic optimisations
-  * specialised data structures
-  * any other significant efficiency optimisations
-  * alternative or enhanced algorithms beyond those discussed in class
-  * any other significant ideas you have incorporated from your independent research
+    and, if so, how have you selected which is the most effective? ✔
+* Other aspects: Are there any other important creative or technical aspects of your work? ✔
+  * algorithmic optimisations ✔
+  * specialised data structures ✔
+  * any other significant efficiency optimisations ✔
+  * alternative or enhanced algorithms beyond those discussed in class ✔
+  * any other significant ideas you have incorporated from your independent research ✔
 * Supporting work: Have you completed any other work to assist you 
                    in the process of developing your game-playing program? ✔
 
