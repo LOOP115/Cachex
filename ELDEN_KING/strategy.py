@@ -63,25 +63,24 @@ def utility_value(player, curr_player, action, board):
 # Mini Max with alpha-beta pruning
 def minimax(player, board, danger, time_left, turn_limit, ext):
     # Set a timer
-    print(f"# Danger time: {danger}")
-    print(f"# Ext time: {ext}")
-    print(f"# Time limit: {time_left}")
-    print(f"# Turn limit: {turn_limit}")
+    # print(f"# Danger time: {danger}")
+    # print(f"# Ext time: {ext}")
+    # print(f"# Time limit: {time_left}")
+    # print(f"# Turn limit: {turn_limit}")
     start_time = time.time()
-
     cut_depth = set_depth(board)
-    print(f"# max depth: {cut_depth}")
+    # print(f"# max depth: {cut_depth}")
+
     # First move
     if board.turn == 1:
         action = (0, board.size >> 1)
         return [action]
-
     # Get all available actions currently
     actions = get_actions(board)
 
     # Time nearly exhausted, do not make more calculations
     if time_left < ext:
-        print("# Start random")
+        # print("# random!")
         return [random.choice(actions)]
 
     # Filter out promising actions at current state
@@ -121,12 +120,11 @@ def minimax(player, board, danger, time_left, turn_limit, ext):
         if len(capture_actions) > 0:
             good_actions = capture_actions
 
-    # print()
     # Sort the promising actions based on their evaluation result
     # Choose the greatest half to perform mini-max search to reduce time complexity
     good_actions.sort(key=lambda x: x[1], reverse=True)
     good_actions = good_actions[:len(good_actions) // 2 + 1]
-    print(f"# eval time: {time.time() - start_time}")
+    # print(f"# eval time: {time.time() - start_time}")
 
     # Limited time left
     if time_left < danger or cut_depth == 0:

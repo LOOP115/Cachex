@@ -7,7 +7,7 @@
 [**Searching**](simple_search)
 
 * [Specification](spec/spec_a.pdf)
-* [Report](simple_search/report/report.pdf)
+* [Report](report/report_a.pdf)
 
 ####
 
@@ -27,12 +27,13 @@
 **Playing the Game**
 
 * [Specification](spec/spec_b.pdf)
+* [Report](report/report_b.pdf)
 
 > Setup on Unix Machine
 * <code> Host Name: dimefox.eng.unimelb.edu.au </code>
 * <code> enable-python3 </code>
-* <code> pcsp (files) (username)@username>@dimefox.eng.unimelb.edu.au:(remote directory path) </code>
-* <code> python -m referee (board size) (red player) (blue player) -c </code>
+* <code> pcsp [files] [username]@username>@dimefox.eng.unimelb.edu.au:[remote directory path] </code>
+* <code> python -m referee [board size] [red player] [blue player] -c -s [space MB] -t [time sec] </code>
 
 ### Progress Check List
 

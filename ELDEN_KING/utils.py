@@ -446,24 +446,6 @@ def print_path(player, start, goal, explored):
 
 # Get all possible actions in current turn
 def get_actions(board):
-    n = board.size
-    t = board.turn
-    actions = []
-    # In first turn, we can consider only half of the board due to symmetry
-    if t == 1:
-        for i in range(n):
-            for j in range(n - i):
-                actions.append((i, j))
-        # Check center
-        c = n >> 1
-        cell = (c, c)
-        if not board.legal_first_move(cell):
-            actions.remove(cell)
-        # actions.append((0, n - 1))
-        return actions
-    # In second turn, decide if to steal
-
-    # Normally, just extract the empty cells from board
     return board.empty_cells
 
 
@@ -482,8 +464,8 @@ def is_win(player, size, max_path):
 # Set max depth dynamically
 def set_depth(board):
     size = board.size
-    depth = 2
-    if size < 7:
+    depth = 0
+    if size < 6:
         return 3
     elif size < 11:
         return 2
