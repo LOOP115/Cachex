@@ -4,7 +4,7 @@
 
 ## Part A
 
-[**Searching**](simple_search)
+[**Searching**](resources/projectA)
 
 * [Specification](spec/spec_a.pdf)
 * [Report](report/report_a.pdf)
@@ -28,6 +28,7 @@
 
 * [Specification](spec/spec_b.pdf)
 * [Report](report/report_b.pdf)
+* [Pygame](resources/play)
 
 > Setup on Unix Machine
 * <code> Host Name: dimefox.eng.unimelb.edu.au </code>

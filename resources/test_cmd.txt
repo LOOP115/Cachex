@@ -1,0 +1,43 @@
+Send files to dimefox:
+
+pscp ELDEN_KING/*.py jiahchen4@dimefox.eng.unimelb.edu.au:/storage4/pool2/students/j/jiahchen4/cachex_play/ELDEN_KING
+
+pscp referee/*.py jiahchen4@dimefox.eng.unimelb.edu.au:/storage4/pool2/students/j/jiahchen4/cachex_play/referee
+
+pscp human/*.py jiahchen4@dimefox.eng.unimelb.edu.au:/storage4/pool2/students/j/jiahchen4/cachex_play/human
+
+pscp oppo_rand/*.py jiahchen4@dimefox.eng.unimelb.edu.au:/storage4/pool2/students/j/jiahchen4/cachex_play/oppo_rand
+
+
+Play game:
+
+python -m referee 3 ELDEN_KING ELDEN_KING -c -s 100 -t 9
+
+python -m referee 4 ELDEN_KING ELDEN_KING -c -s 100 -t 16
+
+python -m referee 5 ELDEN_KING ELDEN_KING -c -s 100 -t 25
+
+python -m referee 6 ELDEN_KING ELDEN_KING -c -s 100 -t 36
+
+python -m referee 7 ELDEN_KING ELDEN_KING -c -s 100 -t 49
+
+python -m referee 8 ELDEN_KING ELDEN_KING -c -s 100 -t 64
+
+python -m referee 9 ELDEN_KING ELDEN_KING -c -s 100 -t 81
+
+python -m referee 10 ELDEN_KING ELDEN_KING -c -s 100 -t 100
+
+python -m referee 11 ELDEN_KING ELDEN_KING -c -s 100 -t 121
+
+python -m referee 12 ELDEN_KING ELDEN_KING -c -s 100 -t 144
+
+python -m referee 13 ELDEN_KING ELDEN_KING -c -s 100 -t 169
+
+python -m referee 14 ELDEN_KING ELDEN_KING -c -s 100 -t 196
+
+python -m referee 15 ELDEN_KING ELDEN_KING -c -s 100 -t 225
+
+python -m referee 15 oppo_rand ELDEN_KING -c -s 100 -t 225
+
+python -m referee 15 ELDEN_KING oppo_rand -c -s 100 -t 225
+
