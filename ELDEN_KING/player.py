@@ -17,7 +17,7 @@ class Player:
         self.player = player
         self.size = n
         self.board = Board(n, player)
-        self.danger_time = n * n * 0.4
+        self.danger_time = n * n * 0.35
         self.ext_time = n * n * 0.02
         self.time_left = n * n
         self.turn_limit = 5
@@ -27,18 +27,15 @@ class Player:
         Called at the beginning of your turn. Based on the current state
         of the game, select an action to play.
         """
-        # Decide next move
+        # Decide next move and update timer
         start_time = time.time()
         decision = minimax(self.player, self.board, self.danger_time, self.time_left, self.turn_limit, self.ext_time)
         end_time = time.time()
-
-        cell = decision[0]
         time_elapse = end_time - start_time
         self.time_left -= time_elapse
-        # print(f"# Time elapse: {time_elapse}")
-        if cell == steal:
-            return cell
-        return place_action(cell)
+        if decision == steal:
+            return decision
+        return place_action(decision)
 
     def turn(self, player, action):
         """

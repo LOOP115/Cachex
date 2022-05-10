@@ -1,8 +1,9 @@
-from math import inf, tanh
+from math import inf
 from copy import deepcopy
 from ELDEN_KING.utils import *
 import time
 import random
+
 
 # Decide if this is a good move to search deeper
 def evaluation(player, action, board):
@@ -56,32 +57,26 @@ def utility_value(player, curr_player, action, board):
         op_win_cost = 2 * n
 
     # Compute utility value based on the following features
-    res = 1 * len(my_max_path) - 2 * len(op_max_path) - 2 * my_win_cost + 3 * op_win_cost + 1 * len(my_cells) - 2 * len(op_cells)
-    return res
+    uv = len(my_max_path) - 2 * len(op_max_path) - 2 * my_win_cost + 3 * op_win_cost + len(my_cells) - 2 * len(op_cells)
+    return uv
 
 
 # Mini Max with alpha-beta pruning
 def minimax(player, board, danger, time_left, turn_limit, ext):
-    # Set a timer
-    # print(f"# Danger time: {danger}")
-    # print(f"# Ext time: {ext}")
-    # print(f"# Time limit: {time_left}")
-    # print(f"# Turn limit: {turn_limit}")
+    # Set a timer and cut-off depth
     start_time = time.time()
     cut_depth = set_depth(board)
-    # print(f"# max depth: {cut_depth}")
 
     # First move
     if board.turn == 1:
         action = (0, board.size >> 1)
-        return [action]
+        return action
     # Get all available actions currently
     actions = get_actions(board)
 
-    # Time nearly exhausted, do not make more calculations
+    # Time nearly exhausted, no more calculations
     if time_left < ext:
-        # print("# random!")
-        return [random.choice(actions)]
+        return random.choice(actions)
 
     # Filter out promising actions at current state
     good_actions = []
@@ -90,14 +85,15 @@ def minimax(player, board, danger, time_left, turn_limit, ext):
     may_lose = False
     for action in actions:
         score, lose = evaluation(player, action, board)
-        # print(f"# eval: {action}: {score}")
         if score == inf:
             if not lose:
-                return [action, inf]
+                # Directly take this move to win
+                return action
             else:
                 may_lose = True
                 lose_actions.append(action)
         good_actions.append((action, score))
+        # Record moves than can perform capture
         if len(board.can_capture(action, player)) > 0:
             capture_actions.append((action, score))
 
@@ -107,7 +103,7 @@ def minimax(player, board, danger, time_left, turn_limit, ext):
             good_actions = capture_actions
         else:
             # No available capture, try to block
-            return [lose_actions[0]]
+            return lose_actions[0]
 
     # If opponent's min cost to win is too small, try to capture
     my_cells, op_cells = split_curr_board(player, board)
@@ -115,7 +111,6 @@ def minimax(player, board, danger, time_left, turn_limit, ext):
     op_win_cost = None
     if op_win is not None:
         op_win_cost = best_goal(op_win, op_path)[1]
-    # print(f"# op win cost: {op_win_cost}")
     if op_win_cost is not None and op_win_cost <= 0.4 * board.size:
         if len(capture_actions) > 0:
             good_actions = capture_actions
@@ -124,11 +119,12 @@ def minimax(player, board, danger, time_left, turn_limit, ext):
     # Choose the greatest half to perform mini-max search to reduce time complexity
     good_actions.sort(key=lambda x: x[1], reverse=True)
     good_actions = good_actions[:len(good_actions) // 2 + 1]
-    # print(f"# eval time: {time.time() - start_time}")
 
-    # Limited time left
+    # Limited time left or large board size, use greedy
     if time_left < danger or cut_depth == 0:
-        return [good_actions[0][0]]
+        if board.turn == 2:
+            return steal
+        return good_actions[0][0]
 
     # Find the action with max utility value after looking several steps ahead
     value = -inf
@@ -147,20 +143,17 @@ def minimax(player, board, danger, time_left, turn_limit, ext):
 
     # Consider if steal in second turn
     if board.turn == 2:
-        # first_move = list(board.board_dict.keys())[0]
-        # print(f"# Decide if to steal {first_move}")
+        # Check time limit
         curr_time = time.time()
         if curr_time - start_time > turn_limit:
-            return [steal]
+            return steal
         board_clone = deepcopy(board)
         steal_move = board_clone.fake_steal()
         first_move_utility = min_value(player, steal_move, board_clone, 0, -inf, inf, cut_depth)
-        # print(f"# Utility of steal: {first_move_utility}")
-        # print(f"# Utility of not steal: {value}")
         if first_move_utility >= value:
-            return [steal]
+            return steal
 
-    return res, value
+    return res
 
 
 # Return the max value assuming opponent selected actions with min values
