@@ -71,37 +71,15 @@
   * 如果我方下这步棋我方会赢，我方直接下这步棋 ✔
   * 如果对方下这步棋我方会输，我方下这步棋拦截 ✔
 * 递归前先评估所有可以下的位置，排序后对评分前 50% 的位置进行 MiniMax ✔
-* 每轮博弈都进行预先筛选 ❌
+* 每轮博弈都进行预先筛选
 
 > 构造 Opponent
-* Random ✔ ✌
-* Greedy: Select most immediately promising action ✔ ✌
+* Random ✔
+* Greedy: Select most immediately promising action ✔
 * Simple evaluation function ✔
 * Same strategy ✔
-* Human ✔ ✌
+* Human ✔
 
 > Dimefox 测试
 * 设置 Timer ✔
 * Memory ✔
-
-> 完成 Report
-* Describe your approach: How does your game-playing program select actions throughout the game? ✔
-  * What search algorithm have you chosen, and why? ✔
-  * Have you made any modifications to an existing algorithm? ✔
-  * What are the features of your evaluation function, and what are their strategic motivations? ✔
-  * If you have applied machine learning, how does this fit into your overall approach? ❌
-  * What learning methodology have you followed, and why? ❌
-  * Note that it is not essential to use machine learning to design a strong player. ✔
-* Performance evaluation: How effective is your game-playing program? ✔
-  * How have you judged your program’s performance? ✔
-  * Have you compared multiple programs based on different approaches, 
-    and, if so, how have you selected which is the most effective? ✔
-* Other aspects: Are there any other important creative or technical aspects of your work? ✔
-  * algorithmic optimisations ✔
-  * specialised data structures ✔
-  * any other significant efficiency optimisations ✔
-  * alternative or enhanced algorithms beyond those discussed in class ✔
-  * any other significant ideas you have incorporated from your independent research ✔
-* Supporting work: Have you completed any other work to assist you 
-                   in the process of developing your game-playing program? ✔
-
