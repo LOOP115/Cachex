@@ -83,3 +83,5 @@
 > Dimefox 测试
 * 设置 Timer ✔
 * Memory ✔
+
+> [Bitboard](https://spin.atomicobject.com/2017/07/08/game-playing-ai-bitboards/)
