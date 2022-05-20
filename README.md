@@ -1,4 +1,4 @@
-# Cachex
+# Cachex Agent
 
 * [Cachex Rules](spec/cachex_rule.pdf)
 
@@ -36,7 +36,7 @@
 * <code> pcsp [files] [username]@username>@dimefox.eng.unimelb.edu.au:[remote directory path] </code>
 * <code> python -m referee [board size] [red player] [blue player] -c -s [space MB] -t [time sec] </code>
 
-### Progress Check List
+### Check List
 
 > 校验 Rules
 * Swap Rule (STEAL) ✔
