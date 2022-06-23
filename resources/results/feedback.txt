@@ -1,0 +1,11 @@
+Great Work on finishing the assignment. See attached marks for the programming aspect.
+
+Report Feedback:
+- Canonical outline in introduction would have been in dotpoints
+- Sections in structure 1.1 1.2 2.1 2.2 2.2.1 ect more canonical
+- II. SYSTEM STRUCTURE AND MECHANISM could probably have been removed/heavily reduced as it mostly pertains to implementation, I can read the code to see you implementation I am interested in your approach at a higher level. This is the case canonically with research reports in compsci
+- some aspects could have been more concise e.g. "The board is of great importance since it records all the information that the agent requires and guarantees that each move is regarded valid by the referee." Could have been omitted.
+- III A, pseudo code could be omitted, diagram is sufficient to communicate your idea.
+- IV.ADVERSARIAL SEARCH again could be far more concise, The table included communicates most of you core ideas, I recommend trying to simplify your explanation to communicate the core aspects. sentences such as "Imagine that your opponent even does not give you an opportunity to build a path, and it looks ahead several steps to get you into this trouble, how can you defeat it? We have encountered lots of dilemmas when fighting it, for example, if we perform a capture, we will be captured in the next turn." could be communicated in far less words.
+
+Final comments: I can see you guys have put alot of work into the report; it is highly polished. You use a range of strategies to optimize your minmax which earned you marks. However, the report suffers from not being concise enough, oftentimes the core message gets lost. What we are looking for (in the marking criteria) is the strategies you implemented and how they performed in your development.
